@@ -37,6 +37,7 @@ namespace FarmTracker_services
 
             services.AddDbContext<farmTrackerContext>(options => options.UseSqlServer(Configuration.GetConnectionString("farmTrackerContext")));
 
+            services.AddScoped<IFarmTrackerRepo, FarmTrackerRepo>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
