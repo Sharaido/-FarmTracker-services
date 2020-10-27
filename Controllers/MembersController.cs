@@ -32,7 +32,7 @@ namespace FarmTracker_services.Controllers
         }
 
         [HttpGet("signin")]
-        public SignInResponse SignIn([FromBody] SignInRequest signInRequest)
+        public ActionResult<SignInResponse> SignIn([FromBody] SignInRequest signInRequest)
         {
             SignInResponse signInResponse = new SignInResponse();
             Users theUser = _repositroy.GetUserFromSignInKey(signInRequest.SignInKey);
@@ -73,7 +73,7 @@ namespace FarmTracker_services.Controllers
             }
 
             Exit:
-            return signInResponse;
+            return Ok(signInResponse);
         }
         private string GetHashedPassword(string password)
         {
@@ -84,6 +84,71 @@ namespace FarmTracker_services.Controllers
                 hashedMd5 = Convert.ToBase64String(result);
             }
             return hashedMd5;
+        }
+
+        [HttpGet("GetUsers/{UUID}")]
+        public ActionResult<User> GetUsers(Guid UUID)
+        {
+            var u = _repositroy.GetUser(UUID);
+            if (u == null)
+            {
+                return NotFound();
+            }
+            return Ok(u);
+        }
+
+        [HttpGet("GetNewUCodeForSignUp")]
+        public ActionResult<GeneratedUcodes> GetNewUCodeForSignUp()
+        {
+            var ip = _accessor.ActionContext.HttpContext.Connection.RemoteIpAddress.ToString();
+            var uCode = _repositroy.GetNewUCodeForSignUp(ip);
+            if (uCode == null)
+            {
+                return BadRequest();
+            }
+            return Ok(uCode);
+        }
+
+        [HttpPost("signup")]
+        public ActionResult<SignUpResponse> SignUp([FromBody] SignUpRequest signUpRequest)
+        {
+            SignUpResponse signUpResponse = new SignUpResponse();
+
+            var textInfo = CultureInfo.CurrentCulture.TextInfo;
+            signUpRequest.Name = textInfo.ToTitleCase(signUpRequest.Name.Trim());
+            signUpRequest.Surname = textInfo.ToTitleCase(signUpRequest.Surname.Trim());
+
+            signUpRequest.Password = GetHashedPassword(signUpRequest.Password);
+
+            var generatedCode = _repositroy
+                .InsertUser(
+                new Users
+                {
+                    Username = signUpRequest.Username,
+                    Email = signUpRequest.Email,
+                    Password = signUpRequest.Password,
+                    Name = signUpRequest.Name,
+                    Surname = signUpRequest.Surname,
+                },
+                signUpRequest.GUC
+                );
+            if (generatedCode != null)
+            {
+                signUpResponse.Result = true;
+            }
+            else
+            {
+                return BadRequest();
+            }
+            return CreatedAtAction(
+                nameof(GetUsers), 
+                new { UUID = generatedCode.ForUuid },
+                new User
+                {
+                    Username = signUpRequest.Username,
+                    Name = signUpRequest.Name,
+                    Surname = signUpRequest.Surname
+                });
         }
     }
 }
