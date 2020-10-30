@@ -35,6 +35,11 @@ namespace FarmTracker_services.Data
                 .FirstOrDefault();
         }
 
+        public Roles GetRoleFromRUID(int RUID)
+        {
+            return _context.Roles.Where(r => r.Ruid == RUID).FirstOrDefault();
+        }
+
         public User GetUser(Guid UUID)
         {
             var u = _context.Users.Where(e => e.Uuid.Equals(UUID) && !e.DeletedFlag).FirstOrDefault();
@@ -55,6 +60,14 @@ namespace FarmTracker_services.Data
         {
             return _context.Users
                 .FromSql($"SelectUserFromSignInKey {SignInKey}")
+                .ToList()
+                .FirstOrDefault();
+        }
+        [Obsolete]
+        public Sessions InsertSession(Guid UUID)
+        {
+            return _context.Sessions
+                .FromSql($"InsertSession {UUID}")
                 .ToList()
                 .FirstOrDefault();
         }

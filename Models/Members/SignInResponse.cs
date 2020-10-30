@@ -11,5 +11,7 @@ namespace FarmTracker_services.Models
         public bool TooManyAttempts { get; set; }
         public bool SessionTerminated { get; set; }
         public string RedirectAddress { get; set; }
+        public string Token { get; set; }
+        public DateTime Expiration { get; set; }
     }
 }

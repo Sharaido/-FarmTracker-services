@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,12 +11,15 @@ using FarmTracker_services.Data;
 using FarmTracker_services.Models;
 using FarmTracker_services.Models.DB;
 using FarmTracker_services.Models.Members;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Server.IIS.Core;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 
 namespace FarmTracker_services.Controllers
 {
@@ -24,11 +29,13 @@ namespace FarmTracker_services.Controllers
     {
         private readonly IFarmTrackerRepo _repositroy;
         private readonly IActionContextAccessor _accessor;
+        private readonly IConfiguration _configuration;
 
-        public MembersController(IFarmTrackerRepo repository, IActionContextAccessor accessor)
+        public MembersController(IFarmTrackerRepo repository, IActionContextAccessor accessor, IConfiguration configuration)
         {
             _repositroy = repository;
             _accessor = accessor;
+            _configuration = configuration;
         }
 
         [HttpGet("signin")]
@@ -49,6 +56,27 @@ namespace FarmTracker_services.Controllers
                 var hashedPass = GetHashedPassword(signInRequest.Password);
                 if (hashedPass == theUser.Password)
                 {
+                    var authClaims = new List<Claim>
+                    {
+                        new Claim("UUID", theUser.Uuid.ToString()),
+                        new Claim(ClaimTypes.Name, theUser.Name),
+                        new Claim(ClaimTypes.Surname, theUser.Surname),
+                        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                        new Claim(ClaimTypes.Role, _repositroy.GetRoleFromRUID(theUser.Ruid).Name)
+                    };
+
+                    var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]));
+
+                    var token = new JwtSecurityToken(
+                        issuer: _configuration["JWT:ValidIssuer"],
+                        audience: _configuration["JWT:ValidAudience"],
+                        expires: DateTime.Now.AddHours(3),
+                        claims: authClaims,
+                        signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
+                        );
+
+                    signInResponse.Token = new JwtSecurityTokenHandler().WriteToken(token);
+                    signInResponse.Expiration = token.ValidTo;
                     signInResponse.Result = true;
                 }
                 else
@@ -73,7 +101,11 @@ namespace FarmTracker_services.Controllers
             }
 
             Exit:
-            return Ok(signInResponse);
+            if (signInResponse.Result)
+            {
+                return Ok(signInResponse);
+            }
+            return Unauthorized(signInResponse);
         }
         private string GetHashedPassword(string password)
         {
@@ -149,6 +181,12 @@ namespace FarmTracker_services.Controllers
                     Name = signUpRequest.Name,
                     Surname = signUpRequest.Surname
                 });
+        }
+        [HttpPost("CreateSession/{UUID}")]
+        [Authorize]
+        public ActionResult<Sessions> CreateSession(Guid UUID)
+        {
+            return _repositroy.InsertSession(UUID);
         }
     }
 }
