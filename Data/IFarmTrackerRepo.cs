@@ -16,5 +16,7 @@ namespace FarmTracker_services.Data
         void InsertSignInLog(SignInLogs log);
         int GetFailedSignInRequestsInTheLast5MinFromUUID(Guid UUID);
         bool SaveChanges();
+        Sessions InsertSession(Guid UUID);
+        Roles GetRoleFromRUID(int RUID);
     }
 }
