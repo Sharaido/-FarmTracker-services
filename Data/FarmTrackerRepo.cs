@@ -64,6 +64,63 @@ namespace FarmTracker_services.Data
                 .FirstOrDefault();
         }
         [Obsolete]
+        public EntityDetails InsertDetailForEntityOfFP(EntityDetails detail)
+        {
+            return _context.EntityDetails
+                .FromSql($"InsertDetailForEntityOfFP {detail.Euid}, {detail.Name}, {detail.Description}, {detail.Cost}, {detail.RemainderDate}, {detail.CreatedByUuid}")
+                .ToList()
+                .FirstOrDefault();
+        }
+        [Obsolete]
+        public EntityCopvalues InsertEntityCOPValue(EntityCopvalues copvalue)
+        {
+            return _context.EntityCopvalues
+                .FromSql($"InsertEntityCOPValue {copvalue.Euid}, {copvalue.Puid}, {copvalue.Value}")
+                .ToList()
+                .FirstOrDefault();
+        }
+        [Obsolete]
+        public EntityOfFp InsertEntityForFP(EntityOfFp entity)
+        {
+            return _context.EntityOfFp
+                .FromSql($"InsertEntityForFP {entity.Cuid}, {entity.Puid}, {entity.Id}, {entity.Name}, {entity.Description}, {entity.Count}, {entity.PurchasedDate}, {entity.Cost}, {entity.CreatedByUuid}")
+                .ToList()
+                .FirstOrDefault();
+        }
+        [Obsolete]
+        public IncomeAndExpeneses InsertExpense(IncomeAndExpeneses expenese)
+        {
+            return _context.IncomeAndExpeneses
+                .FromSql($"InsertExpense {expenese.Fuid}, {expenese.Date}, {expenese.Head}, {expenese.Decription}, {expenese.Cost}, {expenese.CreatedByUuid}")
+                .ToList()
+                .FirstOrDefault();
+        }
+        [Obsolete]
+        public Farms InsertFarm(Farms farm)
+        {
+            return _context.Farms
+                .FromSql($"InsertFarm {farm.Name}, {farm.Description}, {farm.CreatedByUuid}")
+                .ToList()
+                .FirstOrDefault();
+        }
+        [Obsolete]
+        public FarmProperties InsertFarmProperty(FarmProperties property)
+        {
+            return _context.FarmProperties
+                .FromSql($"InsertFarmProperty {property.Name}, {property.Description}, {property.Tuid}, {property.Fuid}, {property.CreatedByUuid}")
+                .ToList()
+                .FirstOrDefault();
+        }
+        [Obsolete]
+        public IncomeAndExpeneses InsertIncome(IncomeAndExpeneses income)
+        {
+            return _context.IncomeAndExpeneses
+                .FromSql($"InsertIncome {income.Fuid}, {income.Date}, {income.Head}, {income.Decription}, {income.Cost}, {income.CreatedByUuid}")
+                .ToList()
+                .FirstOrDefault();
+        }
+
+        [Obsolete]
         public Sessions InsertSession(Guid UUID)
         {
             return _context.Sessions
