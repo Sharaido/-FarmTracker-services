@@ -25,6 +25,19 @@ namespace FarmTracker_services.Data
                 .ToList();
         }
 
+        public IEnumerable<EntityOfFp> GetEntitiesOfFP(Guid PUID)
+        {
+            return _context.EntityOfFp
+                .Where(e => e.Puid == PUID && !e.DeletedFlag);
+        }
+
+        public EntityOfFp GetEntityOfFP(Guid PUID, Guid EUID)
+        {
+            return _context.EntityOfFp
+                .Where(e => e.Puid == PUID && e.Euid == EUID && !e.DeletedFlag)
+                .FirstOrDefault();
+        }
+
         [Obsolete]
         public int GetFailedSignInRequestsInTheLast5MinFromUUID(Guid UUID)
         {

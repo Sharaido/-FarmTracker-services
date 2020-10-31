@@ -29,6 +29,8 @@ namespace FarmTracker_services.Data
         Farms GetFarm(Guid FUID);
         IEnumerable<FarmProperties> GetFarmProperties(Guid FUID);
         FarmProperties GetFarmProperty(Guid FUID, Guid PUID);
+        IEnumerable<EntityOfFp> GetEntitiesOfFP(Guid PUID);
+        EntityOfFp GetEntityOfFP(Guid PUID, Guid EUID);
 
     }
 }

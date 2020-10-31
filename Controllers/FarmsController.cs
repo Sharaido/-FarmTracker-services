@@ -110,5 +110,56 @@ namespace FarmTracker_services.Controllers
                 }
                 );
         }
+        [HttpGet("Properties/Entities/{PUID}")]
+        public ActionResult<IEnumerable<EntityOfFp>> GetEntitiesOfFP(Guid PUID)
+        {
+            var r = _repositroy.GetEntitiesOfFP(PUID);
+            if (r.Count() == 0)
+            {
+                return NotFound();
+            }
+            return Ok(r);
+        }
+        [HttpGet("Properties/Entities/{PUID}/{EUID}")]
+        public ActionResult<FarmProperties> GetEntitiesOfFP(Guid PUID, Guid EUID)
+        {
+            var r = _repositroy.GetEntityOfFP(PUID, EUID);
+            if (r == null)
+            {
+                return NotFound();
+            }
+            return Ok(r);
+        }
+        [HttpPost("Properties/Entities/")]
+        public ActionResult<EntityOfFp> InsertEntityOfFP([FromBody] EntityOfFp entity)
+        {
+            var UUID = new Guid(User.Claims.FirstOrDefault(e => e.Type.Equals("UUID")).Value);
+            entity.CreatedByUuid = UUID;
+            var r = _repositroy.InsertEntityForFP(entity);
+            if (r == null)
+            {
+                return BadRequest();
+            }
+            return CreatedAtAction(
+                nameof(GetEntitiesOfFP),
+                new
+                {
+                    PUID = r.Puid,
+                    EUID = r.Euid
+                },
+                new
+                {
+                    EUID = r.Euid,
+                    PUID = r.Puid,
+                    CUID = r.Cuid,
+                    ID = r.Id,
+                    Name = r.Name,
+                    Description = r.Description,
+                    Count = r.Count,
+                    PurchasedDate = r.PurchasedDate,
+                    Cost = r.Cost
+                }
+                );
+        }
     }
 }
