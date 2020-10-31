@@ -36,7 +36,17 @@ namespace FarmTracker_services.Data
 
         public Farms GetFarm(Guid FUID)
         {
-            return _context.Farms.Where(e => e.Fuid == FUID).FirstOrDefault();
+            return _context.Farms.Where(e => e.Fuid == FUID && !e.DeletedFlag).FirstOrDefault();
+        }
+
+        public IEnumerable<FarmProperties> GetFarmProperties(Guid FUID)
+        {
+            return _context.FarmProperties.Where(e => e.Fuid == FUID && !e.DeletedFlag);
+        }
+
+        public FarmProperties GetFarmProperty(Guid FUID, Guid PUID)
+        {
+            return _context.FarmProperties.Where(e => e.Puid == PUID && e.Fuid == FUID && !e.DeletedFlag).FirstOrDefault();
         }
 
         [Obsolete]

@@ -63,5 +63,52 @@ namespace FarmTracker_services.Controllers
                 }
                 );
         }
+        [HttpGet("Properties/{FUID}")]
+        public ActionResult<IEnumerable<FarmProperties>> GetFarmProperties(Guid FUID)
+        {
+            var r = _repositroy.GetFarmProperties(FUID);
+            if (r.Count() == 0)
+            {
+                return NotFound();
+            }
+            return Ok(r);
+        }
+        [HttpGet("Properties/{FUID}/{PUID}")]
+        public ActionResult<FarmProperties> GetFarmProperty(Guid FUID, Guid PUID)
+        {
+            var r = _repositroy.GetFarmProperty(FUID, PUID);
+            if (r == null)
+            {
+                return NotFound();
+            }
+            return Ok(r);
+        }
+        [HttpPost("Properties")]
+        public ActionResult<FarmProperties> InsertFarmProperty([FromBody] FarmProperties property)
+        {
+            var UUID = new Guid(User.Claims.FirstOrDefault(e => e.Type.Equals("UUID")).Value);
+            property.CreatedByUuid = UUID;
+            var r = _repositroy.InsertFarmProperty(property);
+            if (r == null)
+            {
+                return BadRequest();
+            }
+            return CreatedAtAction(
+                nameof(GetFarmProperty),
+                new 
+                { 
+                    FUID = r.Fuid,
+                    PUID = r.Puid 
+                },
+                new
+                {
+                    FUID = r.Fuid,
+                    PUID = r.Puid,
+                    TUID = r.Tuid,
+                    Name = r.Name,
+                    Description = r.Description
+                }
+                );
+        }
     }
 }

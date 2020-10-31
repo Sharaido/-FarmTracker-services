@@ -27,6 +27,8 @@ namespace FarmTracker_services.Data
         IncomeAndExpeneses InsertExpense(IncomeAndExpeneses expenese);
         IEnumerable<Farms> GetAllFarmsForUUID(Guid UUID);
         Farms GetFarm(Guid FUID);
+        IEnumerable<FarmProperties> GetFarmProperties(Guid FUID);
+        FarmProperties GetFarmProperty(Guid FUID, Guid PUID);
 
     }
 }
