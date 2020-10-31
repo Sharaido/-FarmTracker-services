@@ -25,6 +25,8 @@ namespace FarmTracker_services.Data
         EntityCopvalues InsertEntityCOPValue(EntityCopvalues copvalue);
         IncomeAndExpeneses InsertIncome(IncomeAndExpeneses income);
         IncomeAndExpeneses InsertExpense(IncomeAndExpeneses expenese);
+        IEnumerable<Farms> GetAllFarmsForUUID(Guid UUID);
+        Farms GetFarm(Guid FUID);
 
     }
 }

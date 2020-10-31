@@ -18,12 +18,25 @@ namespace FarmTracker_services.Data
         }
 
         [Obsolete]
+        public IEnumerable<Farms> GetAllFarmsForUUID(Guid UUID)
+        {
+            return _context.Farms
+                .FromSql($"SelectAllFarmsForUUID {UUID}")
+                .ToList();
+        }
+
+        [Obsolete]
         public int GetFailedSignInRequestsInTheLast5MinFromUUID(Guid UUID)
         {
             return _context.SignInLogs
                 .FromSql($"SelectFailedSignInRequestsInTheLast5MinFromUUID {UUID}")
                 .ToList()
                 .Count;
+        }
+
+        public Farms GetFarm(Guid FUID)
+        {
+            return _context.Farms.Where(e => e.Fuid == FUID).FirstOrDefault();
         }
 
         [Obsolete]
