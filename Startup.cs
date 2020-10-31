@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using FarmTracker_services.Authentication;
 using FarmTracker_services.Data;
 using FarmTracker_services.Models.DB;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
