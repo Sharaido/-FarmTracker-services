@@ -1,7 +1,4 @@
 # FarmTracker-services
-<<<<<<< Updated upstream
-[Project Page](https://github.com/users/Sharaido/projects/4)
-=======
 [See Project Page](https://github.com/users/Sharaido/projects/4)
 ## Database
 [See Database ER Diagram](https://github.com/Sharaido/FarmTracker-files/blob/main/database/db.png)
