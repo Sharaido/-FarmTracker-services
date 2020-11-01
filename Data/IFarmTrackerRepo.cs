@@ -18,5 +18,27 @@ namespace FarmTracker_services.Data
         bool SaveChanges();
         Sessions InsertSession(Guid UUID);
         Roles GetRoleFromRUID(int RUID);
+        Farms InsertFarm(Farms farm);
+        FarmProperties InsertFarmProperty(FarmProperties property);
+        EntityOfFp InsertEntityForFP(EntityOfFp entity);
+        EntityDetails InsertDetailForEntityOfFP(EntityDetails detail);
+        EntityCopvalues InsertEntityCOPValue(EntityCopvalues copvalue);
+        IncomeAndExpeneses InsertIncome(IncomeAndExpeneses income);
+        IncomeAndExpeneses InsertExpense(IncomeAndExpeneses expenese);
+        IEnumerable<Farms> GetAllFarmsForUUID(Guid UUID);
+        Farms GetFarm(Guid FUID);
+        IEnumerable<FarmProperties> GetFarmProperties(Guid FUID);
+        FarmProperties GetFarmProperty(Guid FUID, Guid PUID);
+        IEnumerable<EntityOfFp> GetEntitiesOfFP(Guid PUID);
+        EntityOfFp GetEntityOfFP(Guid PUID, Guid EUID);
+        IEnumerable<EntityCopvalues> GetCOPValues(Guid EUID);
+        EntityCopvalues GetCOPValue(Guid EUID, int PUID);
+        IEnumerable<EntityDetails> GetEntityDetails(Guid EUID);
+        EntityDetails GetEntityDetail(Guid EUID, Guid DUID);
+        IEnumerable<IncomeAndExpeneses> GetIncomeAndExpenses(Guid FUID);
+        IEnumerable<IncomeAndExpeneses> GetIncomes(Guid FUID);
+        IEnumerable<IncomeAndExpeneses> GetExpenses(Guid FUID);
+        IncomeAndExpeneses GetIncomeAndExpenses(Guid FUID, Guid IEUID);
+
     }
 }

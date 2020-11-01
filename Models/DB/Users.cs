@@ -7,8 +7,22 @@ namespace FarmTracker_services.Models.DB
     {
         public Users()
         {
+            CRolesCreatedByUu = new HashSet<CRoles>();
+            CRolesDeletedByUu = new HashSet<CRoles>();
+            Collaborators = new HashSet<Collaborators>();
+            EntityDetailsCreatedByUu = new HashSet<EntityDetails>();
+            EntityDetailsDeletedByUu = new HashSet<EntityDetails>();
+            EntityOfFpCreatedByUu = new HashSet<EntityOfFp>();
+            EntityOfFpDeletedByUu = new HashSet<EntityOfFp>();
+            EntityOfFpSoldByUu = new HashSet<EntityOfFp>();
+            FarmPropertiesCreatedByUu = new HashSet<FarmProperties>();
+            FarmPropertiesDeletedByUu = new HashSet<FarmProperties>();
+            FarmsCreatedByUu = new HashSet<Farms>();
+            FarmsDeletedByUu = new HashSet<Farms>();
             GeneratedUcodes = new HashSet<GeneratedUcodes>();
+            IncomeAndExpeneses = new HashSet<IncomeAndExpeneses>();
             InverseDeletedByUu = new HashSet<Users>();
+            Roles = new HashSet<Roles>();
             Sessions = new HashSet<Sessions>();
             SignInLogs = new HashSet<SignInLogs>();
         }
@@ -17,9 +31,9 @@ namespace FarmTracker_services.Models.DB
         public string Username { get; set; }
         public string Password { get; set; }
         public string Email { get; set; }
-        public bool EmailActivated { get; set; }
+        public bool? EmailActivated { get; set; }
         public string PhoneNumber { get; set; }
-        public bool PhoneNumberActivated { get; set; }
+        public bool? PhoneNumberActivated { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }
         public string ProfilPic { get; set; }
@@ -33,8 +47,22 @@ namespace FarmTracker_services.Models.DB
         public virtual Users DeletedByUu { get; set; }
         public virtual MemberType Mtu { get; set; }
         public virtual Roles Ru { get; set; }
+        public virtual ICollection<CRoles> CRolesCreatedByUu { get; set; }
+        public virtual ICollection<CRoles> CRolesDeletedByUu { get; set; }
+        public virtual ICollection<Collaborators> Collaborators { get; set; }
+        public virtual ICollection<EntityDetails> EntityDetailsCreatedByUu { get; set; }
+        public virtual ICollection<EntityDetails> EntityDetailsDeletedByUu { get; set; }
+        public virtual ICollection<EntityOfFp> EntityOfFpCreatedByUu { get; set; }
+        public virtual ICollection<EntityOfFp> EntityOfFpDeletedByUu { get; set; }
+        public virtual ICollection<EntityOfFp> EntityOfFpSoldByUu { get; set; }
+        public virtual ICollection<FarmProperties> FarmPropertiesCreatedByUu { get; set; }
+        public virtual ICollection<FarmProperties> FarmPropertiesDeletedByUu { get; set; }
+        public virtual ICollection<Farms> FarmsCreatedByUu { get; set; }
+        public virtual ICollection<Farms> FarmsDeletedByUu { get; set; }
         public virtual ICollection<GeneratedUcodes> GeneratedUcodes { get; set; }
+        public virtual ICollection<IncomeAndExpeneses> IncomeAndExpeneses { get; set; }
         public virtual ICollection<Users> InverseDeletedByUu { get; set; }
+        public virtual ICollection<Roles> Roles { get; set; }
         public virtual ICollection<Sessions> Sessions { get; set; }
         public virtual ICollection<SignInLogs> SignInLogs { get; set; }
     }

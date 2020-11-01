@@ -11,11 +11,12 @@ namespace FarmTracker_services.Models.DB
         }
 
         public int Ruid { get; set; }
-        public string CreatedByUuid { get; set; }
+        public Guid? CreatedByUuid { get; set; }
         public string Name { get; set; }
         public bool SysRoleFlag { get; set; }
         public bool CanEnterAdminDashboard { get; set; }
 
+        public virtual Users CreatedByUu { get; set; }
         public virtual ICollection<Users> Users { get; set; }
     }
 }

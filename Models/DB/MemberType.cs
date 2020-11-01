@@ -14,6 +14,7 @@ namespace FarmTracker_services.Models.DB
         public string Name { get; set; }
         public int? FarmLimit { get; set; }
         public int? PropertyLimit { get; set; }
+        public int? EntityLimit { get; set; }
         public int? CollaboratorLimit { get; set; }
         public int? AdLimit { get; set; }
         public bool? SupportFlag { get; set; }
