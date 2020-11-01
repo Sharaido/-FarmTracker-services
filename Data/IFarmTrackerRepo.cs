@@ -35,6 +35,10 @@ namespace FarmTracker_services.Data
         EntityCopvalues GetCOPValue(Guid EUID, int PUID);
         IEnumerable<EntityDetails> GetEntityDetails(Guid EUID);
         EntityDetails GetEntityDetail(Guid EUID, Guid DUID);
+        IEnumerable<IncomeAndExpeneses> GetIncomeAndExpenses(Guid FUID);
+        IEnumerable<IncomeAndExpeneses> GetIncomes(Guid FUID);
+        IEnumerable<IncomeAndExpeneses> GetExpenses(Guid FUID);
+        IncomeAndExpeneses GetIncomeAndExpenses(Guid FUID, Guid IEUID);
 
     }
 }

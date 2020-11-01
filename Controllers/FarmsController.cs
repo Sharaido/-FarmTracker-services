@@ -252,5 +252,103 @@ namespace FarmTracker_services.Controllers
                 }
                 );
         }
+        [HttpGet("IncomeAndExpenses/{FUID}")]
+        public ActionResult<IEnumerable<IncomeAndExpeneses>> GetIncomeAndExpenses(Guid FUID)
+        {
+            var r = _repositroy.GetIncomeAndExpenses(FUID);
+            if (r.Count() == 0)
+            {
+                return NotFound();
+            }
+            return Ok(r);
+        }
+        [HttpGet("Incomes/{FUID}")]
+        public ActionResult<IEnumerable<IncomeAndExpeneses>> GetIncomes(Guid FUID)
+        {
+            var r = _repositroy.GetIncomes(FUID);
+            if (r.Count() == 0)
+            {
+                return NotFound();
+            }
+            return Ok(r);
+        }
+        [HttpGet("Expenses/{FUID}")]
+        public ActionResult<IEnumerable<IncomeAndExpeneses>> GetExpenses(Guid FUID)
+        {
+            var r = _repositroy.GetExpenses(FUID);
+            if (r.Count() == 0)
+            {
+                return NotFound();
+            }
+            return Ok(r);
+        }
+        [HttpGet("IncomeAndExpenses/{FUID}/{IEUID}")]
+        public ActionResult<IncomeAndExpeneses> GetIncomeAndExpenses(Guid FUID, Guid IEUID)
+        {
+            var r = _repositroy.GetIncomeAndExpenses(FUID, IEUID);
+            if (r == null)
+            {
+                return NotFound();
+            }
+            return Ok(r);
+        }
+        [HttpPost("Incomes/")]
+        public ActionResult<IncomeAndExpeneses> InsertIncome([FromBody] IncomeAndExpeneses income)
+        {
+            var UUID = new Guid(User.Claims.FirstOrDefault(e => e.Type.Equals("UUID")).Value);
+            income.CreatedByUuid = UUID;
+            var r = _repositroy.InsertIncome(income);
+            if (r == null)
+            {
+                return BadRequest();
+            }
+            return CreatedAtAction(
+                nameof(GetIncomeAndExpenses),
+                new
+                {
+                    FUID = r.Fuid,
+                    IEUID = r.Ieuid
+                },
+                new
+                {
+                    IEUID = r.Ieuid,
+                    FUID = r.Fuid,
+                    Date = r.Date,
+                    Head = r.Head,
+                    Description = r.Description,
+                    Cost = r.Cost,
+                    IncomeFlag = r.IncomeFlag
+                }
+                );
+        }
+        [HttpPost("Expenses/")]
+        public ActionResult<IncomeAndExpeneses> InsertExpenses([FromBody] IncomeAndExpeneses expenese)
+        {
+            var UUID = new Guid(User.Claims.FirstOrDefault(e => e.Type.Equals("UUID")).Value);
+            expenese.CreatedByUuid = UUID;
+            var r = _repositroy.InsertExpense(expenese);
+            if (r == null)
+            {
+                return BadRequest();
+            }
+            return CreatedAtAction(
+                nameof(GetIncomeAndExpenses),
+                new
+                {
+                    FUID = r.Fuid,
+                    IEUID = r.Ieuid
+                },
+                new
+                {
+                    IEUID = r.Ieuid,
+                    FUID = r.Fuid,
+                    Date = r.Date,
+                    Head = r.Head,
+                    Description = r.Description,
+                    Cost = r.Cost,
+                    IncomeFlag = r.IncomeFlag
+                }
+                );
+        }
     }
 }

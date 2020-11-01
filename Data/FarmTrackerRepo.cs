@@ -64,6 +64,12 @@ namespace FarmTracker_services.Data
                 .FirstOrDefault();
         }
 
+        public IEnumerable<IncomeAndExpeneses> GetExpenses(Guid FUID)
+        {
+            return _context.IncomeAndExpeneses
+                .Where(e => e.Fuid == FUID && !e.DeletedFlag && !e.IncomeFlag);
+        }
+
         [Obsolete]
         public int GetFailedSignInRequestsInTheLast5MinFromUUID(Guid UUID)
         {
@@ -86,6 +92,25 @@ namespace FarmTracker_services.Data
         public FarmProperties GetFarmProperty(Guid FUID, Guid PUID)
         {
             return _context.FarmProperties.Where(e => e.Puid == PUID && e.Fuid == FUID && !e.DeletedFlag).FirstOrDefault();
+        }
+
+        public IEnumerable<IncomeAndExpeneses> GetIncomeAndExpenses(Guid FUID)
+        {
+            return _context.IncomeAndExpeneses
+                .Where(e => e.Fuid == FUID && !e.DeletedFlag);
+        }
+
+        public IncomeAndExpeneses GetIncomeAndExpenses(Guid FUID, Guid IEUID)
+        {
+            return _context.IncomeAndExpeneses
+                .Where(e => e.Fuid == FUID && e.Ieuid == IEUID)
+                .FirstOrDefault();
+        }
+
+        public IEnumerable<IncomeAndExpeneses> GetIncomes(Guid FUID)
+        {
+            return _context.IncomeAndExpeneses
+                .Where(e => e.Fuid == FUID && !e.DeletedFlag && e.IncomeFlag);
         }
 
         [Obsolete]
@@ -153,7 +178,7 @@ namespace FarmTracker_services.Data
         public IncomeAndExpeneses InsertExpense(IncomeAndExpeneses expenese)
         {
             return _context.IncomeAndExpeneses
-                .FromSql($"InsertExpense {expenese.Fuid}, {expenese.Date}, {expenese.Head}, {expenese.Decription}, {expenese.Cost}, {expenese.CreatedByUuid}")
+                .FromSql($"InsertExpense {expenese.Fuid}, {expenese.Date}, {expenese.Head}, {expenese.Description}, {expenese.Cost}, {expenese.CreatedByUuid}")
                 .ToList()
                 .FirstOrDefault();
         }
@@ -177,7 +202,7 @@ namespace FarmTracker_services.Data
         public IncomeAndExpeneses InsertIncome(IncomeAndExpeneses income)
         {
             return _context.IncomeAndExpeneses
-                .FromSql($"InsertIncome {income.Fuid}, {income.Date}, {income.Head}, {income.Decription}, {income.Cost}, {income.CreatedByUuid}")
+                .FromSql($"InsertIncome {income.Fuid}, {income.Date}, {income.Head}, {income.Description}, {income.Cost}, {income.CreatedByUuid}")
                 .ToList()
                 .FirstOrDefault();
         }

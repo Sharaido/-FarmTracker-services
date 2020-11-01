@@ -10,7 +10,7 @@ namespace FarmTracker_services.Models.DB
         public bool IncomeFlag { get; set; }
         public DateTime? Date { get; set; }
         public string Head { get; set; }
-        public string Decription { get; set; }
+        public string Description { get; set; }
         public decimal Cost { get; set; }
         public Guid? CreatedByUuid { get; set; }
         public bool DeletedFlag { get; set; }

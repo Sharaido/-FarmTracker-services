@@ -613,8 +613,6 @@ namespace FarmTracker_services.Models.DB
                     .HasColumnName("date")
                     .HasColumnType("datetime");
 
-                entity.Property(e => e.Decription).HasColumnName("decription");
-
                 entity.Property(e => e.DeletedByUuid).HasColumnName("deletedByUUID");
 
                 entity.Property(e => e.DeletedDate)
@@ -622,6 +620,8 @@ namespace FarmTracker_services.Models.DB
                     .HasColumnType("datetime");
 
                 entity.Property(e => e.DeletedFlag).HasColumnName("deletedFlag");
+
+                entity.Property(e => e.Description).HasColumnName("description");
 
                 entity.Property(e => e.Fuid).HasColumnName("FUID");
 
