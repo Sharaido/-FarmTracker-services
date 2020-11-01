@@ -1,8 +1,8 @@
 # FarmTracker-services
-[See Project Page](https://github.com/users/Sharaido/projects/4)
+- [See Project Page](https://github.com/users/Sharaido/projects/4)
 ## Database
-[See Database ER Diagram](https://github.com/Sharaido/FarmTracker-files/blob/main/database/db.png)
-[See Database Script (MSSQL)](https://github.com/Sharaido/FarmTracker-files/blob/main/database/farmTracker.sql)
+- [See Database ER Diagram](https://github.com/Sharaido/FarmTracker-files/blob/main/database/db.png)
+- [See Database Script (MSSQL)](https://github.com/Sharaido/FarmTracker-files/blob/main/database/farmTracker.sql)
 ## Functions
 - [Get unique code to sign up](#Get-unique-code-to-sign-up)
 - [Sign Up](#Sign-Up)
