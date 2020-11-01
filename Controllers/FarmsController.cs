@@ -161,5 +161,48 @@ namespace FarmTracker_services.Controllers
                 }
                 );
         }
+        [HttpGet("Properties/Entities/COPValues/{EUID}")]
+        public ActionResult<IEnumerable<EntityOfFp>> GetCOPValues(Guid EUID)
+        {
+            var r = _repositroy.GetCOPValues(EUID);
+            if (r.Count() == 0)
+            {
+                return NotFound();
+            }
+            return Ok(r);
+        }
+        [HttpGet("Properties/Entities/COPValues/{EUID}/{PUID}")]
+        public ActionResult<FarmProperties> GetEntitiesOfFP(Guid EUID, int PUID )
+        {
+            var r = _repositroy.GetCOPValue(EUID, PUID);
+            if (r == null)
+            {
+                return NotFound();
+            }
+            return Ok(r);
+        }
+        [HttpPost("Properties/Entities/COPValues/")]
+        public ActionResult<EntityCopvalues> InsertEntityCOPValue([FromBody] EntityCopvalues value)
+        {
+            var r = _repositroy.InsertEntityCOPValue(value);
+            if (r == null)
+            {
+                return BadRequest();
+            }
+            return CreatedAtAction(
+                nameof(GetEntitiesOfFP),
+                new
+                {
+                    EUID = r.Euid,
+                    PUID = r.Puid
+                },
+                new
+                {
+                    EUID = r.Euid,
+                    PUID = r.Puid,
+                    value = r.Value
+                }
+                );
+        }
     }
 }

@@ -25,6 +25,19 @@ namespace FarmTracker_services.Data
                 .ToList();
         }
 
+        public EntityCopvalues GetCOPValue(Guid EUID, int PUID)
+        {
+            return _context.EntityCopvalues
+                .Where(e => e.Euid == EUID && e.Puid == PUID)
+                .FirstOrDefault();
+        }
+
+        public IEnumerable<EntityCopvalues> GetCOPValues(Guid EUID)
+        {
+            return _context.EntityCopvalues
+                .Where(e => e.Euid == EUID);
+        }
+
         public IEnumerable<EntityOfFp> GetEntitiesOfFP(Guid PUID)
         {
             return _context.EntityOfFp
