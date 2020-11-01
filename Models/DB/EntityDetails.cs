@@ -16,7 +16,7 @@ namespace FarmTracker_services.Models.DB
         public Guid? RemainderCompletedByUuid { get; set; }
         public DateTime? CreatedDate { get; set; }
         public Guid CreatedByUuid { get; set; }
-        public bool? DeletedFlag { get; set; }
+        public bool DeletedFlag { get; set; }
         public DateTime? DeletedDate { get; set; }
         public Guid? DeletedByUuid { get; set; }
 

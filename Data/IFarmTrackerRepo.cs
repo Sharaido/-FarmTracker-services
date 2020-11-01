@@ -33,6 +33,8 @@ namespace FarmTracker_services.Data
         EntityOfFp GetEntityOfFP(Guid PUID, Guid EUID);
         IEnumerable<EntityCopvalues> GetCOPValues(Guid EUID);
         EntityCopvalues GetCOPValue(Guid EUID, int PUID);
+        IEnumerable<EntityDetails> GetEntityDetails(Guid EUID);
+        EntityDetails GetEntityDetail(Guid EUID, Guid DUID);
 
     }
 }

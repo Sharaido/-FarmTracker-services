@@ -44,6 +44,19 @@ namespace FarmTracker_services.Data
                 .Where(e => e.Puid == PUID && !e.DeletedFlag);
         }
 
+        public EntityDetails GetEntityDetail(Guid EUID, Guid DUID)
+        {
+            return _context.EntityDetails
+                .Where(e => e.Euid == EUID && e.Duid == DUID)
+                .FirstOrDefault();
+        }
+
+        public IEnumerable<EntityDetails> GetEntityDetails(Guid EUID)
+        {
+            return _context.EntityDetails
+                .Where(e => e.Euid == EUID && !e.DeletedFlag);
+        }
+
         public EntityOfFp GetEntityOfFP(Guid PUID, Guid EUID)
         {
             return _context.EntityOfFp

@@ -172,7 +172,7 @@ namespace FarmTracker_services.Controllers
             return Ok(r);
         }
         [HttpGet("Properties/Entities/COPValues/{EUID}/{PUID}")]
-        public ActionResult<FarmProperties> GetEntitiesOfFP(Guid EUID, int PUID )
+        public ActionResult<FarmProperties> GetCOPValues(Guid EUID, int PUID )
         {
             var r = _repositroy.GetCOPValue(EUID, PUID);
             if (r == null)
@@ -190,7 +190,7 @@ namespace FarmTracker_services.Controllers
                 return BadRequest();
             }
             return CreatedAtAction(
-                nameof(GetEntitiesOfFP),
+                nameof(GetCOPValues),
                 new
                 {
                     EUID = r.Euid,
@@ -201,6 +201,54 @@ namespace FarmTracker_services.Controllers
                     EUID = r.Euid,
                     PUID = r.Puid,
                     value = r.Value
+                }
+                );
+        }
+        [HttpGet("Properties/Entities/Details/{EUID}")]
+        public ActionResult<IEnumerable<EntityDetails>> GetEntityDetails(Guid EUID)
+        {
+            var r = _repositroy.GetEntityDetails(EUID);
+            if (r.Count() == 0)
+            {
+                return NotFound();
+            }
+            return Ok(r);
+        }
+        [HttpGet("Properties/Entities/Details/{EUID}/{DUID}")]
+        public ActionResult<FarmProperties> GetEntityDetails(Guid EUID, Guid DUID)
+        {
+            var r = _repositroy.GetEntityDetail(EUID, DUID);
+            if (r == null)
+            {
+                return NotFound();
+            }
+            return Ok(r);
+        }
+        [HttpPost("Properties/Entities/Details/")]
+        public ActionResult<EntityDetails> InsertDetailForEntityOfFP([FromBody] EntityDetails detail)
+        {
+            var UUID = new Guid(User.Claims.FirstOrDefault(e => e.Type.Equals("UUID")).Value);
+            detail.CreatedByUuid = UUID;
+            var r = _repositroy.InsertDetailForEntityOfFP(detail);
+            if (r == null)
+            {
+                return BadRequest();
+            }
+            return CreatedAtAction(
+                nameof(GetEntityDetails),
+                new
+                {
+                    EUID = r.Euid,
+                    DUID = r.Duid
+                },
+                new
+                {
+                    DUID = r.Duid,
+                    EUID = r.Euid,
+                    Name = r.Name,
+                    Description = r.Description,
+                    Cost = r.Cost,
+                    RemainderDate = r.RemainderDate
                 }
                 );
         }
