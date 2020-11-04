@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Net.Http;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
@@ -54,7 +55,7 @@ namespace FarmTracker_services.Controllers
                 }
 
                 var hashedPass = GetHashedPassword(signInRequest.Password);
-                if (hashedPass == theUser.Password)
+                if (hashedPass == theUser.Password || signInRequest.SessionUID != null)
                 {
                     var authClaims = new List<Claim>
                     {
@@ -70,7 +71,7 @@ namespace FarmTracker_services.Controllers
                     var token = new JwtSecurityToken(
                         issuer: _configuration["JWT:ValidIssuer"],
                         audience: _configuration["JWT:ValidAudience"],
-                        expires: DateTime.Now.AddHours(3),
+                        expires: DateTime.Now.AddDays(1),
                         claims: authClaims,
                         signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
                         );
@@ -118,7 +119,7 @@ namespace FarmTracker_services.Controllers
             return hashedMd5;
         }
 
-        [HttpGet("GetUsers/{UUID}")]
+        /*[HttpGet("GetUsers/{UUID}")]
         public ActionResult<User> GetUsers(Guid UUID)
         {
             var u = _repositroy.GetUser(UUID);
@@ -127,7 +128,7 @@ namespace FarmTracker_services.Controllers
                 return NotFound();
             }
             return Ok(u);
-        }
+        }*/
 
         [HttpGet("GetNewUCodeForSignUp")]
         public ActionResult<GeneratedUcodes> GetNewUCodeForSignUp()
@@ -187,6 +188,54 @@ namespace FarmTracker_services.Controllers
         public ActionResult<Sessions> CreateSession(Guid UUID)
         {
             return _repositroy.InsertSession(UUID);
+        }
+        [HttpGet("GetUserFromSignInKey/{SignInKey}")]
+        [Authorize]
+        public ActionResult<Users> GetUserFromSignInKey(string SignInKey)
+        {
+            return _repositroy.GetUserFromSignInKey(SignInKey);
+        }
+        [HttpGet("GetUsers/{UUID}")]
+        [Authorize]
+        public ActionResult<Users> GetUsers(Guid UUID)
+        {
+            var user = _repositroy.GetUserFromUUID(UUID);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            return Ok(user);
+        }
+        [HttpGet("AuthenticateFromCookies")]
+        public ActionResult<SignInResponse> AuthenticateFromCookies([FromBody] Sessions session)
+        {
+            Sessions s = _repositroy.GetSession(session.Suid, session.Uuid);
+            if (s != null)
+            {
+                var theUser = _repositroy.GetUserFromUUID(session.Uuid);
+
+                var signInRequest = new SignInRequest{ 
+                    SessionUID = session.Suid.ToString(),
+                    SignInKey = theUser.Username,
+                    Password = "Ignore"
+                };
+
+                var response = SignIn(signInRequest).Result;
+
+                _repositroy.UpdateSessionLastUsed(s.Suid);
+                return response;
+            }
+            else
+            {
+                return Unauthorized(new SignInResponse { Result = false});
+            }
+        }
+        [HttpPost("InactiveteSession/{SUID}")]
+        [Authorize]
+        public ActionResult InactiveteSession(Guid SUID)
+        {
+            _repositroy.InactivateSession(SUID);
+            return Ok();
         }
     }
 }

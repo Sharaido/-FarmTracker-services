@@ -127,6 +127,13 @@ namespace FarmTracker_services.Data
             return _context.Roles.Where(r => r.Ruid == RUID).FirstOrDefault();
         }
 
+        public Sessions GetSession(Guid SUID, Guid UUID)
+        {
+            return _context.Sessions
+                .Where(e => e.Suid == SUID && e.Uuid == UUID && e.IsValid)
+                .FirstOrDefault();
+        }
+
         public User GetUser(Guid UUID)
         {
             var u = _context.Users.Where(e => e.Uuid.Equals(UUID) && !e.DeletedFlag).FirstOrDefault();
@@ -150,6 +157,22 @@ namespace FarmTracker_services.Data
                 .ToList()
                 .FirstOrDefault();
         }
+
+        public Users GetUserFromUUID(Guid UUID)
+        {
+            return _context.Users
+                .Where(e => e.Uuid == UUID && !e.DeletedFlag)
+                .FirstOrDefault();
+        }
+
+        public void InactivateSession(Guid SUID)
+        {
+            Sessions s = _context.Sessions.Where(e => e.Suid == SUID).FirstOrDefault();
+            s.LastUsedDate = DateTime.UtcNow;
+            s.IsValid = false;
+            _context.SaveChanges();
+        }
+
         [Obsolete]
         public EntityDetails InsertDetailForEntityOfFP(EntityDetails detail)
         {
@@ -233,6 +256,13 @@ namespace FarmTracker_services.Data
         public bool SaveChanges()
         {
             return _context.SaveChanges() >= 0;
+        }
+
+        public void UpdateSessionLastUsed(Guid SUID)
+        {
+            Sessions s = _context.Sessions.Where(e => e.Suid == SUID).FirstOrDefault();
+            s.LastUsedDate = DateTime.UtcNow;
+            _context.SaveChanges();
         }
     }
 }
