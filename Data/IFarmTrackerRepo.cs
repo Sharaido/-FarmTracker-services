@@ -10,6 +10,7 @@ namespace FarmTracker_services.Data
     public interface IFarmTrackerRepo
     {
         Users GetUserFromSignInKey(string SignInKey);
+        Users GetUserFromUUID(Guid UUID);
         GeneratedUcodes InsertUser(Users User, Guid UCode);
         User GetUser(Guid UUID);
         GeneratedUcodes GetNewUCodeForSignUp(string ip);
@@ -39,6 +40,9 @@ namespace FarmTracker_services.Data
         IEnumerable<IncomeAndExpeneses> GetIncomes(Guid FUID);
         IEnumerable<IncomeAndExpeneses> GetExpenses(Guid FUID);
         IncomeAndExpeneses GetIncomeAndExpenses(Guid FUID, Guid IEUID);
+        Sessions GetSession(Guid SUID, Guid UUID);
+        void UpdateSessionLastUsed(Guid SUID);
+        void InactivateSession(Guid SUID);
 
     }
 }
