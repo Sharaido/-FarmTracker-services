@@ -253,6 +253,16 @@ namespace FarmTracker_services.Data
                 .FirstOrDefault();
         }
 
+        public bool IsUsedEmail(string Email)
+        {
+            return (_context.Users.Where(e => e.Email == Email && !e.DeletedFlag).FirstOrDefault() != null);
+        }
+
+        public bool IsUsedUsername(string Username)
+        {
+            return (_context.Users.Where(e => e.Username == Username && !e.DeletedFlag).FirstOrDefault() != null);
+        }
+
         public bool SaveChanges()
         {
             return _context.SaveChanges() >= 0;

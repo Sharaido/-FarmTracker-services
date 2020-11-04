@@ -43,6 +43,8 @@ namespace FarmTracker_services.Data
         Sessions GetSession(Guid SUID, Guid UUID);
         void UpdateSessionLastUsed(Guid SUID);
         void InactivateSession(Guid SUID);
+        bool IsUsedUsername(string Username);
+        bool IsUsedEmail(string Email);
 
     }
 }

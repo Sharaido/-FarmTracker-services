@@ -173,15 +173,7 @@ namespace FarmTracker_services.Controllers
             {
                 return BadRequest();
             }
-            return CreatedAtAction(
-                nameof(GetUsers), 
-                new { UUID = generatedCode.ForUuid },
-                new User
-                {
-                    Username = signUpRequest.Username,
-                    Name = signUpRequest.Name,
-                    Surname = signUpRequest.Surname
-                });
+            return Ok(signUpResponse);
         }
         [HttpPost("CreateSession/{UUID}")]
         [Authorize]
@@ -236,6 +228,16 @@ namespace FarmTracker_services.Controllers
         {
             _repositroy.InactivateSession(SUID);
             return Ok();
+        }
+        [HttpGet("IsUsedUsername/{Username}")]
+        public ActionResult<bool> IsUsedUsername(string Username)
+        {
+            return Ok(_repositroy.IsUsedUsername(Username));
+        }
+        [HttpGet("IsUsedEmail/{Email}")]
+        public ActionResult<bool> IsUsedEmail(string Email)
+        {
+            return Ok(_repositroy.IsUsedEmail(Email));
         }
     }
 }
