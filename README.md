@@ -11,8 +11,10 @@
 - [Get user's farms](#Get-users-farms)
 - [Create property for a farm](#Create-property-for-a-farm)
 - [Get The Farm's Properties](#Get-The-Farms-Properties)
+- [Get the property](#Get-the-property)
 - [Create Entity for a farm property](#Create-Entity-for-a-farm-property)
 - [Get Entities for a farm property](#Get-Entities-for-a-farm-property)
+- [Get the entity](#Get-the-entity)
 - [Create COPValue for an entityOfFP](#Create-COPValue-for-an-entityOfFP)
 - [Get COPValues for an entityOfFP](#Get-COPValues-for-an-entityOfFP)
 - [Create detail for a entityOfFP](#Create-detail-for-a-entityOfFP)
@@ -120,7 +122,7 @@
 	{
 	    "Name": "Ranch",
 	    "Description": "desc desc desc desc desc desc",
-	    "TUID": 2,
+	    "CUID": 2,
 	    "FUID": "{FUID}"
 	}
 ##### Request
@@ -129,20 +131,20 @@
 	{
 	    "fuid": "{FUID}",
 	    "puid": "{PUID}",
-	    "tuid": 2,
+	    "cuid": 2,
 	    "name": "Ranch",
 	    "description": "desc desc desc desc desc desc"
 	}
 #### Get The Farm's Properties
 ##### Request
-	GET http://localhost:8181/api/Farms/Properties/
+	GET http://localhost:8181/api/Farms/Properties/{FUID}
 ##### Response
 	[
 	    {
 	        "puid": "{PUID}",
 	        "name": "Ranch",
 	        "description": "desc desc desc desc desc desc",
-	        "tuid": 2,
+	        "cuid": 2,
 	        "fuid": "{FUID}",
 	        "createdByUuid": "{UUID}",
 	        "createdDate": "2020-11-01T11:50:20.39",
@@ -153,6 +155,23 @@
 	        "deletedByUu": null
 	    }
 	]
+#### Get the property
+##### Request
+	GET http://localhost:8181/api/Farms/Properties/{FUID}/{PUID}
+##### Response
+	{
+		"puid": "9f82f778-a61b-eb11-a49c-201a06a548bb",
+		"name": "Field 1",
+		"description": "desc desc desc desc desc desc",
+		"cuid": 1,
+		"fuid": "b0afcd1b-9d1b-eb11-a49c-201a06a548bb",
+		"createdByUuid": "e07e65e7-1815-eb11-a494-201a06a548bb",
+		"createdDate": "2020-10-31T18:25:38.29",
+		"deletedFlag": false,
+		"deletedDate": null,
+		"deletedByUuid": null,
+		"createdByUu": null
+	}
 #### Create Entity for a farm property
 ##### Request Body
 	{
@@ -208,6 +227,33 @@
 	        "createdByUu": null
 	    }
 	]
+
+#### Get the entity
+##### Request 
+	GET http://localhost:8181/api/Farms/Properties/Entities/{FarmProperyID}/{EntityID}
+##### Respone 
+	{
+		"euid": "{EUID}",
+		"cuid": 8,
+		"puid": "{PUID}",
+		"id": null,
+		"name": "Blue Dolphin",
+		"description": null,
+		"count": 1,
+		"purchasedDate": null,
+		"cost": 0.0000,
+		"soldFlag": false,
+		"soldDate": null,
+		"soldPrice": null,
+		"soldDetail": null,
+		"soldByUuid": null,
+		"createdDate": "2020-11-01T11:58:47.27",
+		"createdByUuid": "{UUID}",
+		"deletedFlag": false,
+		"deletedDate": null,
+		"deletedByUuid": null,
+		"createdByUu": null
+	}
 
 #### Create COPValue for an entityOfFP
 ##### Request Body
@@ -333,7 +379,7 @@
 	    "Cost": 95
 	}
 ##### Request 
-	POST http://localhost:8181/api/Farms/Incomes/
+	POST http://localhost:8181/api/Farms/Expenses/
 ##### Respone 
 	{
 	    "ieuid": "{IEUID}",

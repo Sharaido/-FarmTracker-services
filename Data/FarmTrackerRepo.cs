@@ -24,18 +24,38 @@ namespace FarmTracker_services.Data
                 .FromSql($"SelectAllFarmsForUUID {UUID}")
                 .ToList();
         }
+        [Obsolete]
+        public IEnumerable<CategoryOfProperties> GetCategoryProperties(int CUID)
+        {
+            // This function must be improved
+            var ls = _context.CategoryOfProperties
+               .FromSql($"SelectPropertiesOfTheCategory {CUID}")
+               .ToList();
+            
+            ls.ForEach(e => e.Tu = _context.Coptypes
+                .Where(x => x.Tuid == e.Tuid)
+                .FirstOrDefault());
 
-        public EntityCopvalues GetCOPValue(Guid EUID, int PUID)
+            return ls;
+        }
+
+        public EntityCopvalues GetECOPValue(Guid EUID, int PUID)
         {
             return _context.EntityCopvalues
                 .Where(e => e.Euid == EUID && e.Puid == PUID)
                 .FirstOrDefault();
         }
 
-        public IEnumerable<EntityCopvalues> GetCOPValues(Guid EUID)
+        public IEnumerable<EntityCopvalues> GetECOPValues(Guid EUID)
         {
             return _context.EntityCopvalues
                 .Where(e => e.Euid == EUID);
+        }
+
+        public IEnumerable<Copvalues> GetCOPValues(int PUID)
+        {
+            return _context.Copvalues
+                .Where(e => e.Puid == PUID);
         }
 
         public IEnumerable<EntityOfFp> GetEntitiesOfFP(Guid PUID)
@@ -134,6 +154,12 @@ namespace FarmTracker_services.Data
                 .FirstOrDefault();
         }
 
+        public IEnumerable<Categories> GetSubCategoies(int CUID)
+        {
+            return _context.Categories
+                .Where(e => e.SubCategoryOfCuid == CUID);
+        }
+
         public User GetUser(Guid UUID)
         {
             var u = _context.Users.Where(e => e.Uuid.Equals(UUID) && !e.DeletedFlag).FirstOrDefault();
@@ -217,7 +243,7 @@ namespace FarmTracker_services.Data
         public FarmProperties InsertFarmProperty(FarmProperties property)
         {
             return _context.FarmProperties
-                .FromSql($"InsertFarmProperty {property.Name}, {property.Description}, {property.Tuid}, {property.Fuid}, {property.CreatedByUuid}")
+                .FromSql($"InsertFarmProperty {property.Name}, {property.Description}, {property.Cuid}, {property.Fuid}, {property.CreatedByUuid}")
                 .ToList()
                 .FirstOrDefault();
         }

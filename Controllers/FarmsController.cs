@@ -104,7 +104,7 @@ namespace FarmTracker_services.Controllers
                 {
                     FUID = r.Fuid,
                     PUID = r.Puid,
-                    TUID = r.Tuid,
+                    CUID = r.Cuid,
                     Name = r.Name,
                     Description = r.Description
                 }
@@ -162,9 +162,9 @@ namespace FarmTracker_services.Controllers
                 );
         }
         [HttpGet("Properties/Entities/COPValues/{EUID}")]
-        public ActionResult<IEnumerable<EntityOfFp>> GetCOPValues(Guid EUID)
+        public ActionResult<IEnumerable<EntityOfFp>> GetECOPValues(Guid EUID)
         {
-            var r = _repositroy.GetCOPValues(EUID);
+            var r = _repositroy.GetECOPValues(EUID);
             if (r.Count() == 0)
             {
                 return NotFound();
@@ -172,9 +172,9 @@ namespace FarmTracker_services.Controllers
             return Ok(r);
         }
         [HttpGet("Properties/Entities/COPValues/{EUID}/{PUID}")]
-        public ActionResult<FarmProperties> GetCOPValues(Guid EUID, int PUID )
+        public ActionResult<FarmProperties> GetECOPValues(Guid EUID, int PUID )
         {
-            var r = _repositroy.GetCOPValue(EUID, PUID);
+            var r = _repositroy.GetECOPValue(EUID, PUID);
             if (r == null)
             {
                 return NotFound();
@@ -190,7 +190,7 @@ namespace FarmTracker_services.Controllers
                 return BadRequest();
             }
             return CreatedAtAction(
-                nameof(GetCOPValues),
+                nameof(GetECOPValues),
                 new
                 {
                     EUID = r.Euid,
@@ -349,6 +349,36 @@ namespace FarmTracker_services.Controllers
                     IncomeFlag = r.IncomeFlag
                 }
                 );
+        }
+        [HttpGet("SubCategories/{CUID}")]
+        public ActionResult<IEnumerable<Categories>> GetSubCategories(int CUID)
+        {
+            var r = _repositroy.GetSubCategoies(CUID);
+            if (r.Count() == 0)
+            {
+                return NotFound();
+            }
+            return Ok(r);
+        }
+        [HttpGet("CategoryProperties/{CUID}")]
+        public ActionResult<IEnumerable<CategoryOfProperties>> GetCategoryProperties(int CUID)
+        {
+            var r = _repositroy.GetCategoryProperties(CUID);
+            if (r.Count() == 0)
+            {
+                return NotFound();
+            }
+            return Ok(r);
+        }
+        [HttpGet("COPValues/{PUID}")]
+        public ActionResult<IEnumerable<CategoryOfProperties>> GetCOPValues(int PUID)
+        {
+            var r = _repositroy.GetCOPValues(PUID);
+            if (r.Count() == 0)
+            {
+                return NotFound();
+            }
+            return Ok(r);
         }
     }
 }

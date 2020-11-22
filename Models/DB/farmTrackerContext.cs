@@ -26,7 +26,6 @@ namespace FarmTracker_services.Models.DB
         public virtual DbSet<EntityDetails> EntityDetails { get; set; }
         public virtual DbSet<EntityOfFp> EntityOfFp { get; set; }
         public virtual DbSet<FarmProperties> FarmProperties { get; set; }
-        public virtual DbSet<FarmPropertyType> FarmPropertyType { get; set; }
         public virtual DbSet<Farms> Farms { get; set; }
         public virtual DbSet<GeneratedUcodes> GeneratedUcodes { get; set; }
         public virtual DbSet<IncomeAndExpeneses> IncomeAndExpeneses { get; set; }
@@ -103,14 +102,14 @@ namespace FarmTracker_services.Models.DB
 
                 entity.Property(e => e.Cuid).HasColumnName("CUID");
 
+                entity.Property(e => e.EndPointFlag)
+                    .HasColumnName("endPointFlag")
+                    .HasDefaultValueSql("((1))");
+
                 entity.Property(e => e.Name)
                     .IsRequired()
                     .HasColumnName("name")
                     .HasMaxLength(50);
-
-                entity.Property(e => e.SubCategoryFlag)
-                    .HasColumnName("subCategoryFlag")
-                    .HasDefaultValueSql("((0))");
 
                 entity.Property(e => e.SubCategoryOfCuid).HasColumnName("subCategoryOfCUID");
             });
@@ -443,6 +442,8 @@ namespace FarmTracker_services.Models.DB
                     .HasColumnType("datetime")
                     .HasDefaultValueSql("(getutcdate())");
 
+                entity.Property(e => e.Cuid).HasColumnName("CUID");
+
                 entity.Property(e => e.DeletedByUuid).HasColumnName("deletedByUUID");
 
                 entity.Property(e => e.DeletedDate)
@@ -455,18 +456,26 @@ namespace FarmTracker_services.Models.DB
 
                 entity.Property(e => e.Fuid).HasColumnName("FUID");
 
+                entity.Property(e => e.Location)
+                    .HasColumnName("location")
+                    .HasMaxLength(50);
+
                 entity.Property(e => e.Name)
                     .IsRequired()
                     .HasColumnName("name")
                     .HasMaxLength(50);
-
-                entity.Property(e => e.Tuid).HasColumnName("TUID");
 
                 entity.HasOne(d => d.CreatedByUu)
                     .WithMany(p => p.FarmPropertiesCreatedByUu)
                     .HasForeignKey(d => d.CreatedByUuid)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_farmProperties_users1");
+
+                entity.HasOne(d => d.Cu)
+                    .WithMany(p => p.FarmProperties)
+                    .HasForeignKey(d => d.Cuid)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_farmProperties_categories");
 
                 entity.HasOne(d => d.DeletedByUu)
                     .WithMany(p => p.FarmPropertiesDeletedByUu)
@@ -478,30 +487,6 @@ namespace FarmTracker_services.Models.DB
                     .HasForeignKey(d => d.Fuid)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_farmProperties_farms");
-
-                entity.HasOne(d => d.Tu)
-                    .WithMany(p => p.FarmProperties)
-                    .HasForeignKey(d => d.Tuid)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_farmProperties_farmPropertyType");
-            });
-
-            modelBuilder.Entity<FarmPropertyType>(entity =>
-            {
-                entity.HasKey(e => e.Tuid);
-
-                entity.ToTable("farmPropertyType");
-
-                entity.HasIndex(e => e.Name)
-                    .HasName("IX_farmPropertyType")
-                    .IsUnique();
-
-                entity.Property(e => e.Tuid).HasColumnName("TUID");
-
-                entity.Property(e => e.Name)
-                    .IsRequired()
-                    .HasColumnName("name")
-                    .HasMaxLength(50);
             });
 
             modelBuilder.Entity<Farms>(entity =>
@@ -714,6 +699,7 @@ namespace FarmTracker_services.Models.DB
                     .HasDefaultValueSql("(getutcdate())");
 
                 entity.Property(e => e.IsValid)
+                    .IsRequired()
                     .HasColumnName("isValid")
                     .HasDefaultValueSql("((1))");
 

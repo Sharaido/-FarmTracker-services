@@ -32,8 +32,8 @@ namespace FarmTracker_services.Data
         FarmProperties GetFarmProperty(Guid FUID, Guid PUID);
         IEnumerable<EntityOfFp> GetEntitiesOfFP(Guid PUID);
         EntityOfFp GetEntityOfFP(Guid PUID, Guid EUID);
-        IEnumerable<EntityCopvalues> GetCOPValues(Guid EUID);
-        EntityCopvalues GetCOPValue(Guid EUID, int PUID);
+        IEnumerable<EntityCopvalues> GetECOPValues(Guid EUID);
+        EntityCopvalues GetECOPValue(Guid EUID, int PUID);
         IEnumerable<EntityDetails> GetEntityDetails(Guid EUID);
         EntityDetails GetEntityDetail(Guid EUID, Guid DUID);
         IEnumerable<IncomeAndExpeneses> GetIncomeAndExpenses(Guid FUID);
@@ -45,6 +45,9 @@ namespace FarmTracker_services.Data
         void InactivateSession(Guid SUID);
         bool IsUsedUsername(string Username);
         bool IsUsedEmail(string Email);
+        IEnumerable<Categories> GetSubCategoies(int CUID);
+        IEnumerable<CategoryOfProperties> GetCategoryProperties(int CUID);
+        IEnumerable<Copvalues> GetCOPValues(int PUID);
 
     }
 }
