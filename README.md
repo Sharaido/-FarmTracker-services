@@ -6,15 +6,21 @@
 ## Functions
 - [Get unique code to sign up](#Get-unique-code-to-sign-up)
 - [Sign Up](#Sign-Up)
+- [Username check](#Username-check)
+- [Email check](#Email-check)
 - [Sign In](#Sign-In)
+- [Inactivate a session](#Inactivate-a-session)
 - [Create Farm](#Create-Farm)
 - [Get user's farms](#Get-users-farms)
+- [Delete farm](#Delete-farm)
 - [Create property for a farm](#Create-property-for-a-farm)
 - [Get The Farm's Properties](#Get-The-Farms-Properties)
 - [Get the property](#Get-the-property)
+- [Delete farm property](#Delete-farm-property)
 - [Create Entity for a farm property](#Create-Entity-for-a-farm-property)
 - [Get Entities for a farm property](#Get-Entities-for-a-farm-property)
 - [Get the entity](#Get-the-entity)
+- [Delete fp entity](#Delete-fp-entity)
 - [Create COPValue for an entityOfFP](#Create-COPValue-for-an-entityOfFP)
 - [Get COPValues for an entityOfFP](#Get-COPValues-for-an-entityOfFP)
 - [Create detail for a entityOfFP](#Create-detail-for-a-entityOfFP)
@@ -23,6 +29,7 @@
 - [Create Expense](#Create-Expense)
 - [Get farm's expenses](#Get-farms-expenses)
 - [Get income and expenses for a farm](#Get-income-and-expenses-for-a-farm)
+- [Delete income or expense](#Delete-income-or-expense)
 ### Members Controller
 #### Get unique code to sign up
 - A user can request 5 times to unique code in 5 minutes from same IP.
@@ -59,6 +66,16 @@
 		"name": "Doğuş",
 		"surname": "Kar"
 	}
+#### Username check
+##### Request 
+	GET http://localhost:8181/api/Members/IsUsedUsername/{username}
+##### Response
+	{ false }
+#### Email check
+##### Request 
+	GET http://localhost:8181/api/Members/IsUsedEmail/{email}
+##### Response
+	{ false }
 #### Sign In
 - A user can request to sign in  5 times in 5 minutes.
 ##### Request Body
@@ -80,6 +97,12 @@
 		"token": "*******************",
 		"expiration": "2020-11-01T14:25:46Z"
 	}
+#### Inactivate a session
+- This function required authorization
+
+##### Request 
+	POST http://localhost:8181/api/Members/InactiveteSession/{SUID}
+
 ### Farms Controller
 - Farms controller needs authorization. 
 
@@ -116,6 +139,11 @@
 	        "deletedByUu": null
 	    }
 	]
+#### Delete farm
+##### Request 
+	DELETE http://localhost:8181/api/Farms/{FUID}
+##### Respone
+	{ true } 
 
 #### Create property for a farm
 ##### Request Body
@@ -172,6 +200,12 @@
 		"deletedByUuid": null,
 		"createdByUu": null
 	}
+#### Delete farm property
+##### Request 
+	DELETE http://localhost:8181/api/Farms/Properties/{PUID}
+##### Respone
+	{ true } 
+	
 #### Create Entity for a farm property
 ##### Request Body
 	{
@@ -253,7 +287,12 @@
 		"deletedDate": null,
 		"deletedByUuid": null,
 		"createdByUu": null
-	}
+	}	
+#### Delete fp entity
+##### Request 
+	DELETE http://localhost:8181/api/Farms/Properties/Entities/{EUID}
+##### Respone
+	{ true }
 
 #### Create COPValue for an entityOfFP
 ##### Request Body
@@ -443,3 +482,8 @@
 	        "deletedByUuid": null
 	    }
 	]
+#### Delete income or expense
+##### Request 
+	DELETE http://localhost:8181/api/Farms/IncomeAndExpenses/{IEUID}
+##### Respone
+	{ true } 

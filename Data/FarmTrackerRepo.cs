@@ -300,5 +300,52 @@ namespace FarmTracker_services.Data
             s.LastUsedDate = DateTime.UtcNow;
             _context.SaveChanges();
         }
+
+        [Obsolete]
+        public bool DeleteFarm(Guid FUID, Guid UUID)
+        {
+            var r = _context.Database
+                .ExecuteSqlCommand($"DeleteFarm {FUID}, {UUID}");
+            if (r > 0)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        [Obsolete]
+        public bool DeleteFarmProperty(Guid PUID, Guid UUID)
+        {
+            var r = _context.Database
+                .ExecuteSqlCommand($"DeleteFarmProperty {PUID}, {UUID}");
+            if (r > 0)
+            {
+                return true;
+            }
+            return false;
+        }
+        [Obsolete]
+        public bool DeleteFPEntity(Guid EUID, Guid UUID)
+        {
+            var r = _context.Database
+                .ExecuteSqlCommand($"DeleteFPEntity {EUID}, {UUID}");
+            if (r > 0)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        [Obsolete]
+        public bool DeleteIncomeAndExpenses(Guid IEUID, Guid UUID)
+        {
+            var r = _context.Database
+                .ExecuteSqlCommand($"DeleteIncomeAndExpenses {IEUID}, {UUID}");
+            if (r > 0)
+            {
+                return true;
+            }
+            return false;
+        }
     }
 }

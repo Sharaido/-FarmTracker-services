@@ -48,6 +48,10 @@ namespace FarmTracker_services.Data
         IEnumerable<Categories> GetSubCategoies(int CUID);
         IEnumerable<CategoryOfProperties> GetCategoryProperties(int CUID);
         IEnumerable<Copvalues> GetCOPValues(int PUID);
+        bool DeleteFarm(Guid FUID, Guid UUID);
+        bool DeleteFarmProperty(Guid PUID, Guid UUID);
+        bool DeleteFPEntity(Guid EUID, Guid UUID);
+        bool DeleteIncomeAndExpenses(Guid IEUID, Guid UUID);
 
     }
 }

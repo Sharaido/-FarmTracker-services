@@ -380,5 +380,33 @@ namespace FarmTracker_services.Controllers
             }
             return Ok(r);
         }
+        [HttpDelete("Properties/Entities/{EUID}")]
+        public ActionResult<bool> DeleteFPEntities(Guid EUID)
+        {
+            var UUID = new Guid(User.Claims.FirstOrDefault(e => e.Type.Equals("UUID")).Value);
+            var r = _repositroy.DeleteFPEntity(EUID, UUID);
+            return Ok(r);
+        }
+        [HttpDelete("Properties/{PUID}")]
+        public ActionResult<bool> DeleteFarmProperty(Guid PUID)
+        {
+            var UUID = new Guid(User.Claims.FirstOrDefault(e => e.Type.Equals("UUID")).Value);
+            var r = _repositroy.DeleteFarmProperty(PUID, UUID);
+            return Ok(r);
+        }
+        [HttpDelete("{FUID}")]
+        public ActionResult<bool> Delete(Guid FUID)
+        {
+            var UUID = new Guid(User.Claims.FirstOrDefault(e => e.Type.Equals("UUID")).Value);
+            var r = _repositroy.DeleteFarm(FUID, UUID);
+            return Ok(r);
+        }
+        [HttpDelete("IncomeAndExpenses/{IEUID}")]
+        public ActionResult<bool> DeleteIncomeAndExpenses(Guid IEUID)
+        {
+            var UUID = new Guid(User.Claims.FirstOrDefault(e => e.Type.Equals("UUID")).Value);
+            var r = _repositroy.DeleteIncomeAndExpenses(IEUID, UUID);
+            return Ok(r);
+        }
     }
 }
