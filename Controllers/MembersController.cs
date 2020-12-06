@@ -39,7 +39,7 @@ namespace FarmTracker_services.Controllers
             _configuration = configuration;
         }
 
-        [HttpGet("signin")]
+        [HttpPost("signin")]
         public ActionResult<SignInResponse> SignIn([FromBody] SignInRequest signInRequest)
         {
             SignInResponse signInResponse = new SignInResponse();

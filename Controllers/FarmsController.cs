@@ -104,7 +104,7 @@ namespace FarmTracker_services.Controllers
                 {
                     FUID = r.Fuid,
                     PUID = r.Puid,
-                    TUID = r.Tuid,
+                    CUID = r.Cuid,
                     Name = r.Name,
                     Description = r.Description
                 }
@@ -121,7 +121,7 @@ namespace FarmTracker_services.Controllers
             return Ok(r);
         }
         [HttpGet("Properties/Entities/{PUID}/{EUID}")]
-        public ActionResult<FarmProperties> GetEntitiesOfFP(Guid PUID, Guid EUID)
+        public ActionResult<EntityOfFp> GetEntitiesOfFP(Guid PUID, Guid EUID)
         {
             var r = _repositroy.GetEntityOfFP(PUID, EUID);
             if (r == null)
@@ -162,9 +162,9 @@ namespace FarmTracker_services.Controllers
                 );
         }
         [HttpGet("Properties/Entities/COPValues/{EUID}")]
-        public ActionResult<IEnumerable<EntityOfFp>> GetCOPValues(Guid EUID)
+        public ActionResult<IEnumerable<EntityCopvalues>> GetECOPValues(Guid EUID)
         {
-            var r = _repositroy.GetCOPValues(EUID);
+            var r = _repositroy.GetECOPValues(EUID);
             if (r.Count() == 0)
             {
                 return NotFound();
@@ -172,9 +172,9 @@ namespace FarmTracker_services.Controllers
             return Ok(r);
         }
         [HttpGet("Properties/Entities/COPValues/{EUID}/{PUID}")]
-        public ActionResult<FarmProperties> GetCOPValues(Guid EUID, int PUID )
+        public ActionResult<EntityCopvalues> GetECOPValues(Guid EUID, int PUID )
         {
-            var r = _repositroy.GetCOPValue(EUID, PUID);
+            var r = _repositroy.GetECOPValue(EUID, PUID);
             if (r == null)
             {
                 return NotFound();
@@ -190,7 +190,7 @@ namespace FarmTracker_services.Controllers
                 return BadRequest();
             }
             return CreatedAtAction(
-                nameof(GetCOPValues),
+                nameof(GetECOPValues),
                 new
                 {
                     EUID = r.Euid,
@@ -215,7 +215,7 @@ namespace FarmTracker_services.Controllers
             return Ok(r);
         }
         [HttpGet("Properties/Entities/Details/{EUID}/{DUID}")]
-        public ActionResult<FarmProperties> GetEntityDetails(Guid EUID, Guid DUID)
+        public ActionResult<EntityDetails> GetEntityDetails(Guid EUID, Guid DUID)
         {
             var r = _repositroy.GetEntityDetail(EUID, DUID);
             if (r == null)
@@ -349,6 +349,64 @@ namespace FarmTracker_services.Controllers
                     IncomeFlag = r.IncomeFlag
                 }
                 );
+        }
+        [HttpGet("SubCategories/{CUID}")]
+        public ActionResult<IEnumerable<Categories>> GetSubCategories(int CUID)
+        {
+            var r = _repositroy.GetSubCategoies(CUID);
+            if (r.Count() == 0)
+            {
+                return NotFound();
+            }
+            return Ok(r);
+        }
+        [HttpGet("CategoryProperties/{CUID}")]
+        public ActionResult<IEnumerable<CategoryOfProperties>> GetCategoryProperties(int CUID)
+        {
+            var r = _repositroy.GetCategoryProperties(CUID);
+            if (r.Count() == 0)
+            {
+                return NotFound();
+            }
+            return Ok(r);
+        }
+        [HttpGet("COPValues/{PUID}")]
+        public ActionResult<IEnumerable<CategoryOfProperties>> GetCOPValues(int PUID)
+        {
+            var r = _repositroy.GetCOPValues(PUID);
+            if (r.Count() == 0)
+            {
+                return NotFound();
+            }
+            return Ok(r);
+        }
+        [HttpDelete("Properties/Entities/{EUID}")]
+        public ActionResult<bool> DeleteFPEntities(Guid EUID)
+        {
+            var UUID = new Guid(User.Claims.FirstOrDefault(e => e.Type.Equals("UUID")).Value);
+            var r = _repositroy.DeleteFPEntity(EUID, UUID);
+            return Ok(r);
+        }
+        [HttpDelete("Properties/{PUID}")]
+        public ActionResult<bool> DeleteFarmProperty(Guid PUID)
+        {
+            var UUID = new Guid(User.Claims.FirstOrDefault(e => e.Type.Equals("UUID")).Value);
+            var r = _repositroy.DeleteFarmProperty(PUID, UUID);
+            return Ok(r);
+        }
+        [HttpDelete("{FUID}")]
+        public ActionResult<bool> Delete(Guid FUID)
+        {
+            var UUID = new Guid(User.Claims.FirstOrDefault(e => e.Type.Equals("UUID")).Value);
+            var r = _repositroy.DeleteFarm(FUID, UUID);
+            return Ok(r);
+        }
+        [HttpDelete("IncomeAndExpenses/{IEUID}")]
+        public ActionResult<bool> DeleteIncomeAndExpenses(Guid IEUID)
+        {
+            var UUID = new Guid(User.Claims.FirstOrDefault(e => e.Type.Equals("UUID")).Value);
+            var r = _repositroy.DeleteIncomeAndExpenses(IEUID, UUID);
+            return Ok(r);
         }
     }
 }

@@ -13,7 +13,8 @@ namespace FarmTracker_services.Models.DB
         public Guid Puid { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public int Tuid { get; set; }
+        public string Location { get; set; }
+        public int Cuid { get; set; }
         public Guid Fuid { get; set; }
         public Guid CreatedByUuid { get; set; }
         public DateTime? CreatedDate { get; set; }
@@ -22,9 +23,9 @@ namespace FarmTracker_services.Models.DB
         public Guid? DeletedByUuid { get; set; }
 
         public virtual Users CreatedByUu { get; set; }
+        public virtual Categories Cu { get; set; }
         public virtual Users DeletedByUu { get; set; }
         public virtual Farms Fu { get; set; }
-        public virtual FarmPropertyType Tu { get; set; }
         public virtual ICollection<EntityOfFp> EntityOfFp { get; set; }
     }
 }
