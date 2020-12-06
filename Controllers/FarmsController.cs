@@ -121,7 +121,7 @@ namespace FarmTracker_services.Controllers
             return Ok(r);
         }
         [HttpGet("Properties/Entities/{PUID}/{EUID}")]
-        public ActionResult<FarmProperties> GetEntitiesOfFP(Guid PUID, Guid EUID)
+        public ActionResult<EntityOfFp> GetEntitiesOfFP(Guid PUID, Guid EUID)
         {
             var r = _repositroy.GetEntityOfFP(PUID, EUID);
             if (r == null)
@@ -162,7 +162,7 @@ namespace FarmTracker_services.Controllers
                 );
         }
         [HttpGet("Properties/Entities/COPValues/{EUID}")]
-        public ActionResult<IEnumerable<EntityOfFp>> GetECOPValues(Guid EUID)
+        public ActionResult<IEnumerable<EntityCopvalues>> GetECOPValues(Guid EUID)
         {
             var r = _repositroy.GetECOPValues(EUID);
             if (r.Count() == 0)
@@ -172,7 +172,7 @@ namespace FarmTracker_services.Controllers
             return Ok(r);
         }
         [HttpGet("Properties/Entities/COPValues/{EUID}/{PUID}")]
-        public ActionResult<FarmProperties> GetECOPValues(Guid EUID, int PUID )
+        public ActionResult<EntityCopvalues> GetECOPValues(Guid EUID, int PUID )
         {
             var r = _repositroy.GetECOPValue(EUID, PUID);
             if (r == null)
@@ -215,7 +215,7 @@ namespace FarmTracker_services.Controllers
             return Ok(r);
         }
         [HttpGet("Properties/Entities/Details/{EUID}/{DUID}")]
-        public ActionResult<FarmProperties> GetEntityDetails(Guid EUID, Guid DUID)
+        public ActionResult<EntityDetails> GetEntityDetails(Guid EUID, Guid DUID)
         {
             var r = _repositroy.GetEntityDetail(EUID, DUID);
             if (r == null)

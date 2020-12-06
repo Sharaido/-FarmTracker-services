@@ -84,7 +84,7 @@
 		"Password": "***********"
 	}
 ##### Request 
-	GET http://localhost:8181/api/Members/SignIn
+	POST http://localhost:8181/api/Members/SignIn
 ##### Response
 	{
 		"result": true,
