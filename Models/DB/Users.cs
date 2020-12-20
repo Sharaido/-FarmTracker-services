@@ -7,6 +7,9 @@ namespace FarmTracker_services.Models.DB
     {
         public Users()
         {
+            AddsConfirmedByUu = new HashSet<Adds>();
+            AddsCreatedByUu = new HashSet<Adds>();
+            AddsDeletedByUu = new HashSet<Adds>();
             CRolesCreatedByUu = new HashSet<CRoles>();
             CRolesDeletedByUu = new HashSet<CRoles>();
             Collaborators = new HashSet<Collaborators>();
@@ -15,6 +18,7 @@ namespace FarmTracker_services.Models.DB
             EntityOfFpCreatedByUu = new HashSet<EntityOfFp>();
             EntityOfFpDeletedByUu = new HashSet<EntityOfFp>();
             EntityOfFpSoldByUu = new HashSet<EntityOfFp>();
+            FarmEntities = new HashSet<FarmEntities>();
             FarmPropertiesCreatedByUu = new HashSet<FarmProperties>();
             FarmPropertiesDeletedByUu = new HashSet<FarmProperties>();
             FarmsCreatedByUu = new HashSet<Farms>();
@@ -47,6 +51,9 @@ namespace FarmTracker_services.Models.DB
         public virtual Users DeletedByUu { get; set; }
         public virtual MemberType Mtu { get; set; }
         public virtual Roles Ru { get; set; }
+        public virtual ICollection<Adds> AddsConfirmedByUu { get; set; }
+        public virtual ICollection<Adds> AddsCreatedByUu { get; set; }
+        public virtual ICollection<Adds> AddsDeletedByUu { get; set; }
         public virtual ICollection<CRoles> CRolesCreatedByUu { get; set; }
         public virtual ICollection<CRoles> CRolesDeletedByUu { get; set; }
         public virtual ICollection<Collaborators> Collaborators { get; set; }
@@ -55,6 +62,7 @@ namespace FarmTracker_services.Models.DB
         public virtual ICollection<EntityOfFp> EntityOfFpCreatedByUu { get; set; }
         public virtual ICollection<EntityOfFp> EntityOfFpDeletedByUu { get; set; }
         public virtual ICollection<EntityOfFp> EntityOfFpSoldByUu { get; set; }
+        public virtual ICollection<FarmEntities> FarmEntities { get; set; }
         public virtual ICollection<FarmProperties> FarmPropertiesCreatedByUu { get; set; }
         public virtual ICollection<FarmProperties> FarmPropertiesDeletedByUu { get; set; }
         public virtual ICollection<Farms> FarmsCreatedByUu { get; set; }

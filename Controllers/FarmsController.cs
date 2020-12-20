@@ -408,5 +408,35 @@ namespace FarmTracker_services.Controllers
             var r = _repositroy.DeleteIncomeAndExpenses(IEUID, UUID);
             return Ok(r);
         }
+
+        [HttpGet("FarmEntities/{FUID}")]
+        public ActionResult<IEnumerable<FarmEntities>> GetFarmEntities(Guid FUID)
+        {
+            var r = _repositroy.GetFarmEntities(FUID);
+            if (r.Count() == 0)
+            {
+                return NotFound();
+            }
+            return Ok(r);
+        }
+        [HttpPost("FarmEntities/")]
+        public ActionResult<FarmEntities> InsertFarmEntity([FromBody] FarmEntities entity)
+        {
+            var UUID = new Guid(User.Claims.FirstOrDefault(e => e.Type.Equals("UUID")).Value);
+            entity.CreatedByUuid = UUID;
+            var r = _repositroy.InsertFarmEntity(entity);
+            if (r == null)
+            {
+                return BadRequest();
+            }
+            return Ok(r);
+        }
+        [HttpDelete("FarmEntities/{EUID}")]
+        public ActionResult<bool> DeleteFarmEntity(Guid EUID)
+        {
+            var UUID = new Guid(User.Claims.FirstOrDefault(e => e.Type.Equals("UUID")).Value);
+            var r = _repositroy.DeleteFarmEntity(EUID, UUID);
+            return Ok(r);
+        }
     }
 }

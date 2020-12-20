@@ -2,8 +2,6 @@
 using FarmTracker_services.Models.Members;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace FarmTracker_services.Data
 {
@@ -52,6 +50,10 @@ namespace FarmTracker_services.Data
         bool DeleteFarmProperty(Guid PUID, Guid UUID);
         bool DeleteFPEntity(Guid EUID, Guid UUID);
         bool DeleteIncomeAndExpenses(Guid IEUID, Guid UUID);
+        IEnumerable<FarmEntities> GetFarmEntities(Guid FUID);
+        FarmEntities InsertFarmEntity(FarmEntities entity);
+        bool DeleteFarmEntity(Guid EUID, Guid UUID);
+
 
     }
 }

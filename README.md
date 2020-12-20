@@ -30,6 +30,14 @@
 - [Get farm's expenses](#Get-farms-expenses)
 - [Get income and expenses for a farm](#Get-income-and-expenses-for-a-farm)
 - [Delete income or expense](#Delete-income-or-expense)
+- [Add FarmEntity](#Add-FarmEntity)
+- [Get FarmEntities](#Get-FarmEntities)
+- [Delete FarmEntity](#Delete-FarmEntity)
+- [Get Adds](#Get-Adds)
+- [Get User Adds](#Get-User-Adds)
+- [Create Add](#Create-Add)
+- [Delete Add](#Delete-Add)
+
 ### Members Controller
 #### Get unique code to sign up
 - A user can request 5 times to unique code in 5 minutes from same IP.
@@ -485,5 +493,127 @@
 #### Delete income or expense
 ##### Request 
 	DELETE http://localhost:8181/api/Farms/IncomeAndExpenses/{IEUID}
+##### Respone
+	{ true } 
+
+#### Add FarmEntity
+##### Request Body
+	{
+		"name": "Fish food",
+		"cuid": "22",
+		"fuid": {FUID},
+		"count": 5
+	}
+##### Request 
+	POST http://localhost:8181/api/Farms/FarmEntities/
+##### Respone 
+	{
+		"euid": {EUID},
+		"name": "Fish food",
+		"cuid": 22,
+		"fuid": {FUID},
+		"count": 5,
+		"createdByUuid": {UUID},
+		"createdDate": "2020-12-20T10:11:45.737"
+	}
+
+#### Get FarmEntities
+##### Request 
+	GET http://localhost:8181/api/Farms/FarmEntities/{FUID}
+##### Respone 
+	[
+		{
+			"euid": {EUID},
+			"name": "Fish food",
+			"cuid": 22,
+			"fuid": {FUID},
+			"count": 5,
+			"createdByUuid": {UUID},
+			"createdDate": "2020-12-20T10:11:45.737"
+		}
+	]
+
+#### Delete FarmEntity
+##### Request 
+	DELETE http://localhost:8181/api/Farms/FarmEntities/{EUID}
+##### Respone
+	{ true } 
+
+### Adds
+
+#### Get Adds
+##### Request 
+	GET http://localhost:8181/api/Adds/
+##### Respone 
+	[
+		{
+			"auid": {AUID},
+			"cuid": 22,
+			"name": "Test",
+			"description": "desc",
+			"price": 10.0000,
+			"discount": null,
+			"createdByUuid": {UUID},
+			"createdDate": "2020-12-20T08:26:34.88",
+			"confirmedFlag": false,
+			"confirmedByUuid": null,
+			"publishedFlag": false,
+			"publishedDate": null
+		}
+	]
+
+#### Get User Adds
+##### Request 
+	GET http://localhost:8181/api/Adds/{UUID}
+##### Respone 
+	[
+		{
+			"auid": {AUID},
+			"cuid": 22,
+			"name": "Test",
+			"description": "desc",
+			"price": 10.0000,
+			"discount": null,
+			"createdByUuid": {UUID},
+			"createdDate": "2020-12-20T08:26:34.88",
+			"confirmedFlag": false,
+			"confirmedByUuid": null,
+			"publishedFlag": false,
+			"publishedDate": null
+		}
+	]
+
+#### Create Add
+Creating add requieres authentication
+##### Request Body
+	{
+		"name": "test",
+		"desc": "desc",
+		"price": 500,
+		"cuid": 22
+	}
+##### Request 
+	POST http://localhost:8181/api/Adds
+##### Respone 
+	{
+		"auid": {AUID},
+		"cuid": 22,
+		"name": "test",
+		"description": null,
+		"price": 500.0000,
+		"discount": null,
+		"createdByUuid": {UUID},
+		"createdDate": "2020-12-20T10:00:45.83",
+		"confirmedFlag": false,
+		"confirmedByUuid": null,
+		"publishedFlag": false,
+		"publishedDate": null
+	}
+
+	
+#### Delete Add
+Deleting add requieres authentication
+##### Request 
+	DELETE http://localhost:8181/api/Adds/{AUID}
 ##### Respone
 	{ true } 

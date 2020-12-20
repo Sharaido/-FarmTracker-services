@@ -65,6 +65,7 @@ namespace FarmTracker_services
             });
 
             services.AddScoped<IFarmTrackerRepo, FarmTrackerRepo>();
+            services.AddScoped<IAddsRepo, AddsRepo>();
 
             services.AddControllers().AddNewtonsoftJson(options =>
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore

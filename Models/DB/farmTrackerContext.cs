@@ -15,6 +15,7 @@ namespace FarmTracker_services.Models.DB
         {
         }
 
+        public virtual DbSet<Adds> Adds { get; set; }
         public virtual DbSet<CRoles> CRoles { get; set; }
         public virtual DbSet<Categories> Categories { get; set; }
         public virtual DbSet<CategoryOfProperties> CategoryOfProperties { get; set; }
@@ -25,6 +26,7 @@ namespace FarmTracker_services.Models.DB
         public virtual DbSet<EntityCopvalues> EntityCopvalues { get; set; }
         public virtual DbSet<EntityDetails> EntityDetails { get; set; }
         public virtual DbSet<EntityOfFp> EntityOfFp { get; set; }
+        public virtual DbSet<FarmEntities> FarmEntities { get; set; }
         public virtual DbSet<FarmProperties> FarmProperties { get; set; }
         public virtual DbSet<Farms> Farms { get; set; }
         public virtual DbSet<GeneratedUcodes> GeneratedUcodes { get; set; }
@@ -43,6 +45,74 @@ namespace FarmTracker_services.Models.DB
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Adds>(entity =>
+            {
+                entity.HasKey(e => e.Auid);
+
+                entity.Property(e => e.Auid)
+                    .HasColumnName("AUID")
+                    .HasDefaultValueSql("(newsequentialid())");
+
+                entity.Property(e => e.ConfirmedByUuid).HasColumnName("confirmedByUUID");
+
+                entity.Property(e => e.ConfirmedFlag).HasColumnName("confirmedFlag");
+
+                entity.Property(e => e.CreatedByUuid).HasColumnName("createdByUUID");
+
+                entity.Property(e => e.CreatedDate)
+                    .HasColumnName("createdDate")
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getutcdate())");
+
+                entity.Property(e => e.Cuid).HasColumnName("CUID");
+
+                entity.Property(e => e.DeletedByUuid).HasColumnName("deletedByUUID");
+
+                entity.Property(e => e.DeletedDate)
+                    .HasColumnName("deletedDate")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.DeletedFlag).HasColumnName("deletedFlag");
+
+                entity.Property(e => e.Description).HasColumnName("description");
+
+                entity.Property(e => e.Discount).HasColumnName("discount");
+
+                entity.Property(e => e.Name)
+                    .HasColumnName("name")
+                    .HasMaxLength(255);
+
+                entity.Property(e => e.Price)
+                    .HasColumnName("price")
+                    .HasColumnType("money");
+
+                entity.Property(e => e.PublishedDate)
+                    .HasColumnName("publishedDate")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.PublishedFlag).HasColumnName("publishedFlag");
+
+                entity.HasOne(d => d.ConfirmedByUu)
+                    .WithMany(p => p.AddsConfirmedByUu)
+                    .HasForeignKey(d => d.ConfirmedByUuid)
+                    .HasConstraintName("FK_Adds_users1");
+
+                entity.HasOne(d => d.CreatedByUu)
+                    .WithMany(p => p.AddsCreatedByUu)
+                    .HasForeignKey(d => d.CreatedByUuid)
+                    .HasConstraintName("FK_Adds_users");
+
+                entity.HasOne(d => d.Cu)
+                    .WithMany(p => p.Adds)
+                    .HasForeignKey(d => d.Cuid)
+                    .HasConstraintName("FK_Adds_categories");
+
+                entity.HasOne(d => d.DeletedByUu)
+                    .WithMany(p => p.AddsDeletedByUu)
+                    .HasForeignKey(d => d.DeletedByUuid)
+                    .HasConstraintName("FK_Adds_users2");
+            });
+
             modelBuilder.Entity<CRoles>(entity =>
             {
                 entity.HasKey(e => e.Ruid);
@@ -179,7 +249,6 @@ namespace FarmTracker_services.Models.DB
                 entity.HasOne(d => d.Fu)
                     .WithMany(p => p.Collaborators)
                     .HasForeignKey(d => d.Fuid)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_collaborators_farms");
 
                 entity.HasOne(d => d.Ru)
@@ -252,8 +321,7 @@ namespace FarmTracker_services.Models.DB
                 entity.HasOne(d => d.Eu)
                     .WithMany(p => p.EntityCopvalues)
                     .HasForeignKey(d => d.Euid)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_EntityCOPValues_EntityOfFP");
+                    .HasConstraintName("FK_entityCOPValues_entityOfFP1");
 
                 entity.HasOne(d => d.Pu)
                     .WithMany(p => p.EntityCopvalues)
@@ -423,6 +491,59 @@ namespace FarmTracker_services.Models.DB
                     .WithMany(p => p.EntityOfFpSoldByUu)
                     .HasForeignKey(d => d.SoldByUuid)
                     .HasConstraintName("FK_EntityOfFP_users2");
+            });
+
+            modelBuilder.Entity<FarmEntities>(entity =>
+            {
+                entity.HasKey(e => e.Euid);
+
+                entity.ToTable("farmEntities");
+
+                entity.Property(e => e.Euid)
+                    .HasColumnName("EUID")
+                    .HasDefaultValueSql("(newsequentialid())");
+
+                entity.Property(e => e.Count).HasColumnName("count");
+
+                entity.Property(e => e.CreatedByUuid).HasColumnName("createdByUUID");
+
+                entity.Property(e => e.CreatedDate)
+                    .HasColumnName("createdDate")
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getutcdate())");
+
+                entity.Property(e => e.Cuid).HasColumnName("CUID");
+
+                entity.Property(e => e.DeletedByUuid).HasColumnName("deletedByUUID");
+
+                entity.Property(e => e.DeletedDate)
+                    .HasColumnName("deletedDate")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.DeletedFlag)
+                    .HasColumnName("deletedFlag")
+                    .HasDefaultValueSql("((0))");
+
+                entity.Property(e => e.Fuid).HasColumnName("FUID");
+
+                entity.Property(e => e.Name)
+                    .HasColumnName("name")
+                    .HasMaxLength(50);
+
+                entity.HasOne(d => d.Cu)
+                    .WithMany(p => p.FarmEntities)
+                    .HasForeignKey(d => d.Cuid)
+                    .HasConstraintName("FK_farmEntities_categories");
+
+                entity.HasOne(d => d.DeletedByUu)
+                    .WithMany(p => p.FarmEntities)
+                    .HasForeignKey(d => d.DeletedByUuid)
+                    .HasConstraintName("FK_farmEntities_users");
+
+                entity.HasOne(d => d.Fu)
+                    .WithMany(p => p.FarmEntities)
+                    .HasForeignKey(d => d.Fuid)
+                    .HasConstraintName("FK_farmEntities_farms");
             });
 
             modelBuilder.Entity<FarmProperties>(entity =>

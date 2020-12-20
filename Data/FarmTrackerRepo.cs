@@ -347,5 +347,31 @@ namespace FarmTracker_services.Data
             }
             return false;
         }
+
+        public IEnumerable<FarmEntities> GetFarmEntities(Guid FUID)
+        {
+            return _context.FarmEntities
+                .Where(e => !e.DeletedFlag && e.Fuid == FUID)
+                .OrderByDescending(e => e.CreatedDate);
+        }
+        [Obsolete]
+        public FarmEntities InsertFarmEntity(FarmEntities entity)
+        {
+            return _context.FarmEntities
+                .FromSql($"InsertFarmEntity {entity.Name}, {entity.Cuid}, {entity.Fuid}, {entity.Count}, {entity.CreatedByUuid}")
+                .ToList()
+                .FirstOrDefault();
+        }
+        [Obsolete]
+        public bool DeleteFarmEntity(Guid EUID, Guid UUID)
+        {
+            var r = _context.Database
+                .ExecuteSqlCommand($"DeleteFarmEntity {EUID}, {UUID}");
+            if (r > 0)
+            {
+                return true;
+            }
+            return false;
+        }
     }
 }
