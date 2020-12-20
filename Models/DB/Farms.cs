@@ -16,11 +16,13 @@ namespace FarmTracker_services.Models.DB
         public Guid Fuid { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
+        public string Location { get; set; }
         public Guid CreatedByUuid { get; set; }
         public DateTime? CreatedDate { get; set; }
         public bool DeletedFlag { get; set; }
         public DateTime? DeletedDate { get; set; }
         public Guid? DeletedByUuid { get; set; }
+        public DateTime? LastModifiedDate { get; set; }
 
         public virtual Users CreatedByUu { get; set; }
         public virtual Users DeletedByUu { get; set; }

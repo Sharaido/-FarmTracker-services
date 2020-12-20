@@ -26,7 +26,7 @@ namespace FarmTracker_services.Controllers
         {
             var UUID = new Guid(User.Claims.FirstOrDefault(e => e.Type.Equals("UUID")).Value);
             var r = _repositroy.GetAllFarmsForUUID(UUID);
-            if (r.Count() == 0)
+            if (r == null || r.Count() == 0)
             {
                 return NotFound();
             }
@@ -67,7 +67,7 @@ namespace FarmTracker_services.Controllers
         public ActionResult<IEnumerable<FarmProperties>> GetFarmProperties(Guid FUID)
         {
             var r = _repositroy.GetFarmProperties(FUID);
-            if (r.Count() == 0)
+            if (r == null || r.Count() == 0)
             {
                 return NotFound();
             }
@@ -114,7 +114,7 @@ namespace FarmTracker_services.Controllers
         public ActionResult<IEnumerable<EntityOfFp>> GetEntitiesOfFP(Guid PUID)
         {
             var r = _repositroy.GetEntitiesOfFP(PUID);
-            if (r.Count() == 0)
+            if (r == null || r.Count() == 0)
             {
                 return NotFound();
             }
@@ -165,7 +165,7 @@ namespace FarmTracker_services.Controllers
         public ActionResult<IEnumerable<EntityCopvalues>> GetECOPValues(Guid EUID)
         {
             var r = _repositroy.GetECOPValues(EUID);
-            if (r.Count() == 0)
+            if (r == null || r.Count() == 0)
             {
                 return NotFound();
             }
@@ -208,7 +208,7 @@ namespace FarmTracker_services.Controllers
         public ActionResult<IEnumerable<EntityDetails>> GetEntityDetails(Guid EUID)
         {
             var r = _repositroy.GetEntityDetails(EUID);
-            if (r.Count() == 0)
+            if (r == null || r.Count() == 0)
             {
                 return NotFound();
             }
@@ -256,7 +256,7 @@ namespace FarmTracker_services.Controllers
         public ActionResult<IEnumerable<IncomeAndExpeneses>> GetIncomeAndExpenses(Guid FUID)
         {
             var r = _repositroy.GetIncomeAndExpenses(FUID);
-            if (r.Count() == 0)
+            if (r == null || r.Count() == 0)
             {
                 return NotFound();
             }
@@ -266,7 +266,7 @@ namespace FarmTracker_services.Controllers
         public ActionResult<IEnumerable<IncomeAndExpeneses>> GetIncomes(Guid FUID)
         {
             var r = _repositroy.GetIncomes(FUID);
-            if (r.Count() == 0)
+            if (r == null || r.Count() == 0)
             {
                 return NotFound();
             }
@@ -276,7 +276,7 @@ namespace FarmTracker_services.Controllers
         public ActionResult<IEnumerable<IncomeAndExpeneses>> GetExpenses(Guid FUID)
         {
             var r = _repositroy.GetExpenses(FUID);
-            if (r.Count() == 0)
+            if (r == null || r.Count() == 0)
             {
                 return NotFound();
             }
@@ -354,7 +354,7 @@ namespace FarmTracker_services.Controllers
         public ActionResult<IEnumerable<Categories>> GetSubCategories(int CUID)
         {
             var r = _repositroy.GetSubCategoies(CUID);
-            if (r.Count() == 0)
+            if (r == null || r.Count() == 0)
             {
                 return NotFound();
             }
@@ -364,7 +364,7 @@ namespace FarmTracker_services.Controllers
         public ActionResult<IEnumerable<CategoryOfProperties>> GetCategoryProperties(int CUID)
         {
             var r = _repositroy.GetCategoryProperties(CUID);
-            if (r.Count() == 0)
+            if (r == null || r.Count() == 0)
             {
                 return NotFound();
             }
@@ -374,7 +374,7 @@ namespace FarmTracker_services.Controllers
         public ActionResult<IEnumerable<CategoryOfProperties>> GetCOPValues(int PUID)
         {
             var r = _repositroy.GetCOPValues(PUID);
-            if (r.Count() == 0)
+            if (r == null || r.Count() == 0)
             {
                 return NotFound();
             }
@@ -413,7 +413,7 @@ namespace FarmTracker_services.Controllers
         public ActionResult<IEnumerable<FarmEntities>> GetFarmEntities(Guid FUID)
         {
             var r = _repositroy.GetFarmEntities(FUID);
-            if (r.Count() == 0)
+            if (r == null || r.Count() == 0)
             {
                 return NotFound();
             }

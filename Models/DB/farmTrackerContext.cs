@@ -40,7 +40,10 @@ namespace FarmTracker_services.Models.DB
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
-            {}
+            {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
+                optionsBuilder.UseSqlServer("Server=.;Database=farmTracker;Trusted_Connection=True;MultipleActiveResultSets=true");
+            }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -439,6 +442,11 @@ namespace FarmTracker_services.Models.DB
                     .HasColumnName("ID")
                     .HasMaxLength(50);
 
+                entity.Property(e => e.LastModifiedDate)
+                    .HasColumnName("lastModifiedDate")
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getutcdate())");
+
                 entity.Property(e => e.Name)
                     .IsRequired()
                     .HasColumnName("name")
@@ -520,9 +528,7 @@ namespace FarmTracker_services.Models.DB
                     .HasColumnName("deletedDate")
                     .HasColumnType("datetime");
 
-                entity.Property(e => e.DeletedFlag)
-                    .HasColumnName("deletedFlag")
-                    .HasDefaultValueSql("((0))");
+                entity.Property(e => e.DeletedFlag).HasColumnName("deletedFlag");
 
                 entity.Property(e => e.Fuid).HasColumnName("FUID");
 
@@ -577,9 +583,10 @@ namespace FarmTracker_services.Models.DB
 
                 entity.Property(e => e.Fuid).HasColumnName("FUID");
 
-                entity.Property(e => e.Location)
-                    .HasColumnName("location")
-                    .HasMaxLength(50);
+                entity.Property(e => e.LastModifiedDate)
+                    .HasColumnName("lastModifiedDate")
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getutcdate())");
 
                 entity.Property(e => e.Name)
                     .IsRequired()
@@ -636,6 +643,16 @@ namespace FarmTracker_services.Models.DB
                 entity.Property(e => e.DeletedFlag).HasColumnName("deletedFlag");
 
                 entity.Property(e => e.Description).HasColumnName("description");
+
+                entity.Property(e => e.LastModifiedDate)
+                    .HasColumnName("lastModifiedDate")
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getutcdate())");
+
+                entity.Property(e => e.Location)
+                    .HasColumnName("location")
+                    .HasMaxLength(50)
+                    .IsFixedLength();
 
                 entity.Property(e => e.Name)
                     .IsRequired()
@@ -714,6 +731,11 @@ namespace FarmTracker_services.Models.DB
                     .HasColumnType("money");
 
                 entity.Property(e => e.CreatedByUuid).HasColumnName("createdByUUID");
+
+                entity.Property(e => e.CreatedDate)
+                    .HasColumnName("createdDate")
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getutcdate())");
 
                 entity.Property(e => e.Date)
                     .HasColumnName("date")
