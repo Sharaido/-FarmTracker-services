@@ -53,7 +53,7 @@ namespace FarmTracker_services.Data
         IEnumerable<FarmEntities> GetFarmEntities(Guid FUID);
         FarmEntities InsertFarmEntity(FarmEntities entity);
         bool DeleteFarmEntity(Guid EUID, Guid UUID);
-
+        bool UpdateMemberType(Guid UUID, int MTUID);
 
     }
 }

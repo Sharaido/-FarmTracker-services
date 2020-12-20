@@ -239,5 +239,11 @@ namespace FarmTracker_services.Controllers
         {
             return Ok(_repositroy.IsUsedEmail(Email));
         }
+        [HttpPut("MemberType")]
+        [Authorize]
+        public ActionResult<bool> UpdateUserMemberType(Users user)
+        {
+            return Ok(_repositroy.UpdateMemberType(user.Uuid, user.Mtuid));
+        }
     }
 }

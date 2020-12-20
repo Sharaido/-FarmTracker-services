@@ -32,6 +32,7 @@ namespace FarmTracker_services.Models.DB
         public virtual DbSet<GeneratedUcodes> GeneratedUcodes { get; set; }
         public virtual DbSet<IncomeAndExpeneses> IncomeAndExpeneses { get; set; }
         public virtual DbSet<MemberType> MemberType { get; set; }
+        public virtual DbSet<Pictures> Pictures { get; set; }
         public virtual DbSet<Roles> Roles { get; set; }
         public virtual DbSet<Sessions> Sessions { get; set; }
         public virtual DbSet<SignInLogs> SignInLogs { get; set; }
@@ -40,10 +41,7 @@ namespace FarmTracker_services.Models.DB
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
-            {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Server=.;Database=farmTracker;Trusted_Connection=True;MultipleActiveResultSets=true");
-            }
+            {}
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -798,6 +796,24 @@ namespace FarmTracker_services.Models.DB
                 entity.Property(e => e.PropertyLimit).HasColumnName("propertyLimit");
 
                 entity.Property(e => e.SupportFlag).HasColumnName("supportFlag");
+            });
+
+            modelBuilder.Entity<Pictures>(entity =>
+            {
+                entity.HasKey(e => e.Puid);
+
+                entity.Property(e => e.Puid)
+                    .HasColumnName("PUID")
+                    .HasDefaultValueSql("(newsequentialid())");
+
+                entity.Property(e => e.Address).HasColumnName("address");
+
+                entity.Property(e => e.Auid).HasColumnName("AUID");
+
+                entity.HasOne(d => d.Au)
+                    .WithMany(p => p.Pictures)
+                    .HasForeignKey(d => d.Auid)
+                    .HasConstraintName("FK_Pictures_Adds");
             });
 
             modelBuilder.Entity<Roles>(entity =>

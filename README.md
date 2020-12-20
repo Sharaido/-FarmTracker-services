@@ -9,6 +9,7 @@
 - [Username check](#Username-check)
 - [Email check](#Email-check)
 - [Sign In](#Sign-In)
+- [Change MemberType](#Change-MemberType)
 - [Inactivate a session](#Inactivate-a-session)
 - [Create Farm](#Create-Farm)
 - [Get user's farms](#Get-users-farms)
@@ -37,6 +38,8 @@
 - [Get User Adds](#Get-User-Adds)
 - [Create Add](#Create-Add)
 - [Delete Add](#Delete-Add)
+- [Add Picture for Add](#Add-Picture-for-Add)
+- [Get Pictures for Add](#Get-Pictures-for-Add)
 
 ### Members Controller
 #### Get unique code to sign up
@@ -105,6 +108,18 @@
 		"token": "*******************",
 		"expiration": "2020-11-01T14:25:46Z"
 	}
+
+#### Change MemberType
+##### Request Body
+	{
+		"uuid": "70F13C78-E515-EB11-A495-201A06A548BB",
+		"mtuid": 3
+	}
+##### Request 
+	PUT http://localhost:8181/api/Members/MemberType/
+##### Response
+	true
+
 #### Inactivate a session
 - This function required authorization
 
@@ -617,3 +632,27 @@ Deleting add requieres authentication
 	DELETE http://localhost:8181/api/Adds/{AUID}
 ##### Respone
 	{ true } 
+
+#### Add Picture for Add
+Adding picture requieres authentication
+##### Request Body
+	{
+		"address": "image.jpg",
+		"auid": {AUID}
+	}
+##### Request 
+	POST http://localhost:8181/api/Adds
+##### Respone 
+	true
+	
+#### Get Pictures for Add
+##### Request 
+	GET http://localhost:8181/api/Adds/Pictures/{AUID}
+##### Respone 
+	[
+		{
+			"puid": {PUID},
+			"address": "image.jpg",
+			"auid": {AUID}
+		}
+	]

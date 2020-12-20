@@ -61,5 +61,21 @@ namespace FarmTracker_services.Controllers
             var r = _repositroy.DeleteAdds(AUID, UUID);
             return Ok(r);
         }
+        [HttpPost("Pictures/")]
+        [Authorize]
+        public ActionResult<bool> InsertPictureForAdd([FromBody] Pictures picture)
+        {
+            return Ok(_repositroy.InsertPictureForAdd(picture));
+        }
+        [HttpGet("Pictures/{AUID}")]
+        public ActionResult<IEnumerable<Pictures>> GetPicturesForAdd(Guid AUID)
+        {
+            var r = _repositroy.GetPicturesForAdd(AUID);
+            if (r == null || r.Count() == 0)
+            {
+                return NotFound();
+            }
+            return Ok(r);
+        }
     }
 }

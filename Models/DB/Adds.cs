@@ -5,6 +5,11 @@ namespace FarmTracker_services.Models.DB
 {
     public partial class Adds
     {
+        public Adds()
+        {
+            Pictures = new HashSet<Pictures>();
+        }
+
         public Guid Auid { get; set; }
         public int? Cuid { get; set; }
         public string Name { get; set; }
@@ -25,5 +30,6 @@ namespace FarmTracker_services.Models.DB
         public virtual Users CreatedByUu { get; set; }
         public virtual Categories Cu { get; set; }
         public virtual Users DeletedByUu { get; set; }
+        public virtual ICollection<Pictures> Pictures { get; set; }
     }
 }

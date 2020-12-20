@@ -373,5 +373,21 @@ namespace FarmTracker_services.Data
             }
             return false;
         }
+
+        public bool UpdateMemberType(Guid UUID, int MTUID)
+        {
+            Users user = _context.Users.Where(e => e.Uuid == UUID).FirstOrDefault();
+            if (user !=null )
+            {
+                user.Mtuid = MTUID;
+                var r = _context.SaveChanges();
+                if (r > 0)
+                {
+                    return true;
+                }
+                return false;
+            }
+            return false;
+        }
     }
 }

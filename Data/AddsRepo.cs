@@ -55,5 +55,38 @@ namespace FarmTracker_services.Data
             }
             return false;
         }
+
+        public bool InsertPictureForAdd(Pictures picture)
+        {
+            _context.Pictures.Add(picture);
+            var r = _context.SaveChanges();
+            if (r > 0)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public IEnumerable<Pictures> GetPicturesForAdd(Guid AUID)
+        {
+            return _context.Pictures
+                .Where(e => e.Auid == AUID);
+        }
+
+        public bool DeletePicture(Guid PUID)
+        {
+            Pictures pic = _context.Pictures.Where(e => e.Puid == PUID).FirstOrDefault();
+            if (pic != null)
+            {
+                _context.Pictures.Remove(pic);
+                var r = _context.SaveChanges();
+                if (r > 0)
+                {
+                    return true;
+                }
+                return false;
+            }
+            return false;
+        }
     }
 }
