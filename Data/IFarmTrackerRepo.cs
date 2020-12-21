@@ -10,7 +10,7 @@ namespace FarmTracker_services.Data
         Users GetUserFromSignInKey(string SignInKey);
         Users GetUserFromUUID(Guid UUID);
         GeneratedUcodes InsertUser(Users User, Guid UCode);
-        User GetUser(Guid UUID);
+        Users GetUser(Guid UUID);
         GeneratedUcodes GetNewUCodeForSignUp(string ip);
         void InsertSignInLog(SignInLogs log);
         int GetFailedSignInRequestsInTheLast5MinFromUUID(Guid UUID);

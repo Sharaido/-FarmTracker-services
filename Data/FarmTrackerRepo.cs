@@ -61,7 +61,9 @@ namespace FarmTracker_services.Data
         public IEnumerable<EntityOfFp> GetEntitiesOfFP(Guid PUID)
         {
             return _context.EntityOfFp
-                .Where(e => e.Puid == PUID && !e.DeletedFlag);
+                .Where(e => e.Puid == PUID && !e.DeletedFlag)
+                .OrderByDescending(e => e.LastModifiedDate)
+                .ThenByDescending(e => e.CreatedDate);
         }
 
         public EntityDetails GetEntityDetail(Guid EUID, Guid DUID)
@@ -74,7 +76,8 @@ namespace FarmTracker_services.Data
         public IEnumerable<EntityDetails> GetEntityDetails(Guid EUID)
         {
             return _context.EntityDetails
-                .Where(e => e.Euid == EUID && !e.DeletedFlag);
+                .Where(e => e.Euid == EUID && !e.DeletedFlag)
+                .OrderByDescending(e => e.CreatedDate);
         }
 
         public EntityOfFp GetEntityOfFP(Guid PUID, Guid EUID)
@@ -87,7 +90,8 @@ namespace FarmTracker_services.Data
         public IEnumerable<IncomeAndExpeneses> GetExpenses(Guid FUID)
         {
             return _context.IncomeAndExpeneses
-                .Where(e => e.Fuid == FUID && !e.DeletedFlag && !e.IncomeFlag);
+                .Where(e => e.Fuid == FUID && !e.DeletedFlag && !e.IncomeFlag)
+                .OrderByDescending(e => e.CreatedDate);
         }
 
         [Obsolete]
@@ -106,7 +110,9 @@ namespace FarmTracker_services.Data
 
         public IEnumerable<FarmProperties> GetFarmProperties(Guid FUID)
         {
-            return _context.FarmProperties.Where(e => e.Fuid == FUID && !e.DeletedFlag);
+            return _context.FarmProperties.Where(e => e.Fuid == FUID && !e.DeletedFlag)
+                .OrderByDescending(e => e.LastModifiedDate)
+                .ThenByDescending(e => e.CreatedDate);
         }
 
         public FarmProperties GetFarmProperty(Guid FUID, Guid PUID)
@@ -117,7 +123,8 @@ namespace FarmTracker_services.Data
         public IEnumerable<IncomeAndExpeneses> GetIncomeAndExpenses(Guid FUID)
         {
             return _context.IncomeAndExpeneses
-                .Where(e => e.Fuid == FUID && !e.DeletedFlag);
+                .Where(e => e.Fuid == FUID && !e.DeletedFlag)
+                .OrderByDescending(e => e.CreatedDate);
         }
 
         public IncomeAndExpeneses GetIncomeAndExpenses(Guid FUID, Guid IEUID)
@@ -130,7 +137,8 @@ namespace FarmTracker_services.Data
         public IEnumerable<IncomeAndExpeneses> GetIncomes(Guid FUID)
         {
             return _context.IncomeAndExpeneses
-                .Where(e => e.Fuid == FUID && !e.DeletedFlag && e.IncomeFlag);
+                .Where(e => e.Fuid == FUID && !e.DeletedFlag && e.IncomeFlag)
+                .OrderByDescending(e => e.CreatedDate);
         }
 
         [Obsolete]
@@ -160,12 +168,12 @@ namespace FarmTracker_services.Data
                 .Where(e => e.SubCategoryOfCuid == CUID);
         }
 
-        public User GetUser(Guid UUID)
+        public Users GetUser(Guid UUID)
         {
             var u = _context.Users.Where(e => e.Uuid.Equals(UUID) && !e.DeletedFlag).FirstOrDefault();
             if (u != null)
             {
-                return new User
+                return new Users
                 {
                     Username = u.Username,
                     Name = u.Name,

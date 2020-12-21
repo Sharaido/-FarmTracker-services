@@ -35,6 +35,7 @@
 - [Get FarmEntities](#Get-FarmEntities)
 - [Delete FarmEntity](#Delete-FarmEntity)
 - [Get Adds](#Get-Adds)
+- [Get Add](#Get-Add)
 - [Get User Adds](#Get-User-Adds)
 - [Create Add](#Create-Add)
 - [Delete Add](#Delete-Add)
@@ -573,13 +574,46 @@
 			"confirmedFlag": false,
 			"confirmedByUuid": null,
 			"publishedFlag": false,
-			"publishedDate": null
+			"publishedDate": null,
+			"pictures": [
+				{
+					"puid": "42204165-ba42-eb11-a4e3-201a06a548bb",
+					"address": "image.jpg",
+					"auid": "b2bdad11-9d42-eb11-a4e3-201a06a548bb"
+				}
+			]
 		}
 	]
+#### Get Add
+##### Request 
+	GET http://localhost:8181/api/Adds/{AUID}
+##### Respone 
+	{
+		"auid": {AUID},
+		"cuid": 22,
+		"name": "Test",
+		"description": "desc",
+		"price": 10.0000,
+		"discount": null,
+		"createdByUuid": {UUID},
+		"createdDate": "2020-12-20T08:26:34.88",
+		"confirmedFlag": false,
+		"confirmedByUuid": null,
+		"publishedFlag": false,
+		"publishedDate": null,
+        "pictures": [
+            {
+                "puid": "42204165-ba42-eb11-a4e3-201a06a548bb",
+                "address": "image.jpg",
+                "auid": "b2bdad11-9d42-eb11-a4e3-201a06a548bb"
+            }
+        ]
+	}
+	
 
 #### Get User Adds
 ##### Request 
-	GET http://localhost:8181/api/Adds/{UUID}
+	GET http://localhost:8181/api/Adds/User/{UUID}
 ##### Respone 
 	[
 		{
@@ -594,7 +628,14 @@
 			"confirmedFlag": false,
 			"confirmedByUuid": null,
 			"publishedFlag": false,
-			"publishedDate": null
+			"publishedDate": null,
+			"pictures": [
+				{
+					"puid": "42204165-ba42-eb11-a4e3-201a06a548bb",
+					"address": "image.jpg",
+					"auid": "b2bdad11-9d42-eb11-a4e3-201a06a548bb"
+				}
+			]
 		}
 	]
 

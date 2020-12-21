@@ -28,15 +28,37 @@ namespace FarmTracker_services.Controllers
             {
                 return NotFound();
             }
+            foreach (var i in r)
+            {
+                var pictures = _repositroy.GetPicturesForAdd(i.Auid);
+                i.Pictures = pictures.ToList();
+            }
             return Ok(r);
         }
-        [HttpGet("{UUID}")]
+        [HttpGet("{AUID}")]
+        public ActionResult<Adds> GetAdd(Guid AUID)
+        {
+            var r = _repositroy.GetAdds(AUID);
+            if (r == null)
+            {
+                return NotFound();
+            }
+            var pictures = _repositroy.GetPicturesForAdd(r.Auid);
+            r.Pictures = pictures.ToList();
+            return Ok(r);
+        }
+        [HttpGet("User/{UUID}")]
         public ActionResult<IEnumerable<Adds>> GetUserAdds(Guid UUID)
         {
             var r = _repositroy.GetUserAdds(UUID);
             if (r.Count() == 0)
             {
                 return NotFound();
+            }
+            foreach (var i in r)
+            {
+                var pictures = _repositroy.GetPicturesForAdd(i.Auid);
+                i.Pictures = pictures.ToList();
             }
             return Ok(r);
         }
