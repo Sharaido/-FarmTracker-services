@@ -7,6 +7,7 @@ namespace FarmTracker_services.Models.DB
     {
         public CategoryOfProperties()
         {
+            AddCopvalues = new HashSet<AddCopvalues>();
             Copvalues = new HashSet<Copvalues>();
             EntityCopvalues = new HashSet<EntityCopvalues>();
         }
@@ -18,6 +19,7 @@ namespace FarmTracker_services.Models.DB
 
         public virtual Categories Cu { get; set; }
         public virtual Coptypes Tu { get; set; }
+        public virtual ICollection<AddCopvalues> AddCopvalues { get; set; }
         public virtual ICollection<Copvalues> Copvalues { get; set; }
         public virtual ICollection<EntityCopvalues> EntityCopvalues { get; set; }
     }

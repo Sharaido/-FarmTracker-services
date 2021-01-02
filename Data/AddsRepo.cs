@@ -88,5 +88,31 @@ namespace FarmTracker_services.Data
             }
             return false;
         }
+
+        public IEnumerable<AddCopvalues> GetACopValues(Guid AUID)
+        {
+            return _context.AddCopvalues
+                .Where(e => e.Auid == AUID);
+        }
+
+        public bool InsertACopValue(AddCopvalues value)
+        {
+            var row = _context.AddCopvalues
+                .Where(e => e.Auid == value.Auid && e.Puid == value.Puid).FirstOrDefault();
+            if (row != null)
+            {
+                row.Value = value.Value;
+            }
+            else
+            {
+                _context.AddCopvalues.Add(value);
+            }
+            var r = _context.SaveChanges();
+            if (r > 0)
+            {
+                return true;
+            }
+            return false;
+        }
     }
 }

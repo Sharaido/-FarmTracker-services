@@ -41,6 +41,8 @@
 - [Delete Add](#Delete-Add)
 - [Add Picture for Add](#Add-Picture-for-Add)
 - [Get Pictures for Add](#Get-Pictures-for-Add)
+- [Get CopValues for Add](#Get-CopValues-for-Add)
+- [Add CopValues for Add](#Add-CopValues-for-Add)
 
 ### Members Controller
 #### Get unique code to sign up
@@ -581,7 +583,15 @@
 					"address": "image.jpg",
 					"auid": "b2bdad11-9d42-eb11-a4e3-201a06a548bb"
 				}
-			]
+			],
+			"addCopvalues": [
+				{
+					"auid": {AUID},
+					"puid": 3,
+					"value": "Healty",
+					"pu": null
+				}
+			],
 		}
 	]
 #### Get Add
@@ -607,7 +617,15 @@
                 "address": "image.jpg",
                 "auid": "b2bdad11-9d42-eb11-a4e3-201a06a548bb"
             }
-        ]
+        ],
+		"addCopvalues": [
+			{
+				"auid": {AUID},
+				"puid": 3,
+				"value": "Healty",
+				"pu": null
+			}
+		]
 	}
 	
 
@@ -697,3 +715,28 @@ Adding picture requieres authentication
 			"auid": {AUID}
 		}
 	]
+
+#### Get CopValues for Add
+##### Request 
+	GET http://localhost:8181/api/Adds/COPValues/{AUID}
+##### Respone 
+	[
+		{
+			"auid": {AUID},
+			"puid": {PUID},
+			"value": "30"
+		}
+	]
+
+#### Add CopValues for Add
+Adding CopValues requieres authentication
+##### Request Body
+	{
+		"AUID": {AUID},
+		"PUID": {PUID},
+		"Value": "30"
+	}
+##### Request 
+	POST http://localhost:8181/api/Adds/COPValues/
+##### Respone 
+	true

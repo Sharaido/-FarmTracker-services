@@ -15,6 +15,7 @@ namespace FarmTracker_services.Models.DB
         {
         }
 
+        public virtual DbSet<AddCopvalues> AddCopvalues { get; set; }
         public virtual DbSet<Adds> Adds { get; set; }
         public virtual DbSet<CRoles> CRoles { get; set; }
         public virtual DbSet<Categories> Categories { get; set; }
@@ -46,6 +47,31 @@ namespace FarmTracker_services.Models.DB
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<AddCopvalues>(entity =>
+            {
+                entity.HasKey(e => new { e.Auid, e.Puid });
+
+                entity.ToTable("addCOPValues");
+
+                entity.Property(e => e.Auid).HasColumnName("AUID");
+
+                entity.Property(e => e.Puid).HasColumnName("PUID");
+
+                entity.Property(e => e.Value).HasColumnName("value");
+
+                entity.HasOne(d => d.Au)
+                    .WithMany(p => p.AddCopvalues)
+                    .HasForeignKey(d => d.Auid)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_addCOPValues_Adds");
+
+                entity.HasOne(d => d.Pu)
+                    .WithMany(p => p.AddCopvalues)
+                    .HasForeignKey(d => d.Puid)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_addCOPValues_categoryOfProperties");
+            });
+
             modelBuilder.Entity<Adds>(entity =>
             {
                 entity.HasKey(e => e.Auid);

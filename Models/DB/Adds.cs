@@ -7,6 +7,7 @@ namespace FarmTracker_services.Models.DB
     {
         public Adds()
         {
+            AddCopvalues = new HashSet<AddCopvalues>();
             Pictures = new HashSet<Pictures>();
         }
 
@@ -30,6 +31,7 @@ namespace FarmTracker_services.Models.DB
         public virtual Users CreatedByUu { get; set; }
         public virtual Categories Cu { get; set; }
         public virtual Users DeletedByUu { get; set; }
+        public virtual ICollection<AddCopvalues> AddCopvalues { get; set; }
         public virtual ICollection<Pictures> Pictures { get; set; }
     }
 }

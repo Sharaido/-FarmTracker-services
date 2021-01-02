@@ -16,5 +16,7 @@ namespace FarmTracker_services.Data
         bool InsertPictureForAdd(Pictures picture);
         IEnumerable<Pictures> GetPicturesForAdd(Guid AUID);
         bool DeletePicture(Guid PUID);
+        IEnumerable<AddCopvalues> GetACopValues(Guid AUID);
+        bool InsertACopValue(AddCopvalues value);
     }
 }

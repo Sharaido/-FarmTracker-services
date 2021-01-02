@@ -15,10 +15,12 @@ namespace FarmTracker_services.Controllers
     public class AddsController : ControllerBase
     {
         private readonly IAddsRepo _repositroy;
+        private readonly IFarmTrackerRepo _repositroyFarmTracker;
 
-        public AddsController(IAddsRepo repository)
+        public AddsController(IAddsRepo repository, IFarmTrackerRepo repositroyFarmTracker)
         {
             _repositroy = repository;
+            _repositroyFarmTracker = repositroyFarmTracker;
         }
         [HttpGet]
         public ActionResult<IEnumerable<Adds>> Get()
@@ -32,6 +34,12 @@ namespace FarmTracker_services.Controllers
             {
                 var pictures = _repositroy.GetPicturesForAdd(i.Auid);
                 i.Pictures = pictures.ToList();
+
+                var copValues = _repositroy.GetACopValues(i.Auid);
+                i.AddCopvalues = copValues.ToList();
+
+                var ownerUser = _repositroyFarmTracker.GetUserFromUUID((Guid)i.CreatedByUuid);
+                i.CreatedByUu = ownerUser;
             }
             return Ok(r);
         }
@@ -45,6 +53,13 @@ namespace FarmTracker_services.Controllers
             }
             var pictures = _repositroy.GetPicturesForAdd(r.Auid);
             r.Pictures = pictures.ToList();
+
+            var copValues = _repositroy.GetACopValues(r.Auid);
+            r.AddCopvalues = copValues.ToList();
+
+            var ownerUser = _repositroyFarmTracker.GetUserFromUUID((Guid)r.CreatedByUuid);
+            r.CreatedByUu = ownerUser;
+
             return Ok(r);
         }
         [HttpGet("User/{UUID}")]
@@ -97,6 +112,24 @@ namespace FarmTracker_services.Controllers
             {
                 return NotFound();
             }
+            return Ok(r);
+        }
+
+        [HttpGet("COPValues/{AUID}")]
+        public ActionResult<IEnumerable<EntityCopvalues>> GetECOPValues(Guid AUID)
+        {
+            var r = _repositroy.GetACopValues(AUID);
+            if (r == null || r.Count() == 0)
+            {
+                return NotFound();
+            }
+            return Ok(r);
+        }
+        [HttpPost("COPValues/")]
+        [Authorize]
+        public ActionResult<bool> InsertEntityCOPValue([FromBody] AddCopvalues value)
+        {
+            var r = _repositroy.InsertACopValue(value);
             return Ok(r);
         }
     }
