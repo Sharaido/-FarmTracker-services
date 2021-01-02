@@ -438,5 +438,47 @@ namespace FarmTracker_services.Controllers
             var r = _repositroy.DeleteFarmEntity(EUID, UUID);
             return Ok(r);
         }
+
+        [HttpGet("Collaborators/{FUID}")]
+        public ActionResult<IEnumerable<Collaborators>> GetCollaboratorsForFUID(Guid FUID)
+        {
+            var r = _repositroy.GetCollaboratorsForFUID(FUID);
+            if (r == null || r.Count() == 0)
+            {
+                return NotFound();
+            }
+            return Ok(r);
+        }
+        [HttpPost("Collaborators/")]
+        public ActionResult<Collaborators> InsertCollaborator([FromBody] Collaborators collaborator)
+        {
+            var r = _repositroy.AddOrUpdateCollaboratorToFarm(collaborator);
+            if (r != null)
+            {
+                return Ok(r);
+            }
+            return BadRequest();
+        }
+        [HttpDelete("Collaborators/")]
+        public ActionResult<bool> DeleteFarmEntity(Collaborators collaborator)
+        {
+            var r = _repositroy.DeleteCollaborator(collaborator);
+            if (r)
+            {
+                return Ok(r);
+            }
+            return BadRequest();
+        }
+        [HttpGet("CollaboratorRoles/")]
+        public ActionResult<IEnumerable<CRoles>> GetCRoles()
+        {
+            var r = _repositroy.GetCRoles();
+            if (r == null || r.Count() == 0)
+            {
+                return NotFound();
+            }
+            return Ok(r);
+        }
+
     }
 }

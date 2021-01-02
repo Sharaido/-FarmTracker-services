@@ -245,5 +245,15 @@ namespace FarmTracker_services.Controllers
         {
             return Ok(_repositroy.UpdateMemberType(user.Uuid, user.Mtuid));
         }
+        [HttpGet("SearchUser/{key}")]
+        public ActionResult<IEnumerable<Users>> SearchUser(string key)
+        {
+            var r = _repositroy.SearchUser(key);
+            if (r == null || r.Count() == 0)
+            {
+                return NotFound();
+            }
+            return Ok(r);
+        }
     }
 }

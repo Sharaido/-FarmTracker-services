@@ -54,6 +54,12 @@ namespace FarmTracker_services.Data
         FarmEntities InsertFarmEntity(FarmEntities entity);
         bool DeleteFarmEntity(Guid EUID, Guid UUID);
         bool UpdateMemberType(Guid UUID, int MTUID);
+        IEnumerable<Collaborators> GetCollaboratorsForFUID(Guid FUID);
+        Collaborators AddOrUpdateCollaboratorToFarm(Collaborators collaborator);
+        bool DeleteCollaborator(Collaborators collaborator);
+        IEnumerable<CRoles> GetCRoles();
+        IEnumerable<Users> SearchUser(string key);
+
 
     }
 }

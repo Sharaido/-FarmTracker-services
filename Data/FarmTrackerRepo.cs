@@ -165,7 +165,8 @@ namespace FarmTracker_services.Data
         public IEnumerable<Categories> GetSubCategoies(int CUID)
         {
             return _context.Categories
-                .Where(e => e.SubCategoryOfCuid == CUID);
+                .Where(e => e.SubCategoryOfCuid == CUID)
+                .OrderBy(e => e.Name);
         }
 
         public Users GetUser(Guid UUID)
@@ -186,10 +187,13 @@ namespace FarmTracker_services.Data
         [Obsolete]
         public Users GetUserFromSignInKey(string SignInKey)
         {
-            return _context.Users
+            var user =  _context.Users
                 .FromSql($"SelectUserFromSignInKey {SignInKey}")
                 .ToList()
                 .FirstOrDefault();
+            user.Collaborators = _context.Collaborators.Where(e => e.Uuid == user.Uuid).ToList();
+            user.FarmsCreatedByUu = _context.Farms.Where(e => e.CreatedByUuid == user.Uuid).ToList();
+            return user;
         }
 
         public Users GetUserFromUUID(Guid UUID)
@@ -396,6 +400,75 @@ namespace FarmTracker_services.Data
                 return false;
             }
             return false;
+        }
+        public IEnumerable<Collaborators> GetCollaboratorsForFUID(Guid FUID)
+        {
+            var collaborators = _context.Collaborators.Where(e => e.Fuid == FUID);
+            foreach (var item in collaborators)
+            {
+                item.Uu = _context.Users.Where(e => e.Uuid == item.Uuid).FirstOrDefault();
+            }
+            return collaborators;
+        }
+        public Collaborators AddOrUpdateCollaboratorToFarm(Collaborators collaborator)
+        {
+            Users user = _context.Users.Where(e => e.Uuid == collaborator.Uuid).FirstOrDefault();
+            Farms farm = _context.Farms.Where(e => e.Fuid == collaborator.Fuid).FirstOrDefault();
+            if (user == null || farm == null)
+            {
+                return null;
+            }
+            if (user.Uuid.Equals(farm.CreatedByUuid))
+            {
+                return null;
+            }
+            Collaborators _collaborator = _context.Collaborators.Where(e => e.Uuid == collaborator.Uuid && e.Fuid == collaborator.Fuid).FirstOrDefault();
+            if (_collaborator != null)
+            {
+                _collaborator.Ruid = collaborator.Ruid;
+            }
+            else
+            {
+                _context.Collaborators.Add(collaborator);
+            }
+
+            var r = _context.SaveChanges();
+            if (r > 0)
+            {
+                return collaborator;
+            }
+            return null;
+        }
+
+        public bool DeleteCollaborator(Collaborators collaborator)
+        {
+            Collaborators _collaborator = _context.Collaborators.Where(e => e.Uuid == collaborator.Uuid && e.Fuid == collaborator.Fuid).FirstOrDefault();
+            if (_collaborator != null)
+            {
+                _context.Collaborators.Remove(_collaborator);
+            }
+            var r = _context.SaveChanges();
+            if (r > 0)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public IEnumerable<CRoles> GetCRoles()
+        {
+            return _context.CRoles.OrderBy(e => e.Name);
+        }
+
+        public IEnumerable<Users> SearchUser(string key)
+        {
+            var users = _context.Users.Where(e => e.Name.Contains(key) || e.Surname.Contains(key) || e.Username.Contains(key));
+                
+                /*from u in _context.Users
+                        where EF.Functions.Like(u.Name, "%"+key+"%")
+                        select u;*/
+
+            return users;
         }
     }
 }

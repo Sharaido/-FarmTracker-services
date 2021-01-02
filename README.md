@@ -14,6 +14,10 @@
 - [Create Farm](#Create-Farm)
 - [Get user's farms](#Get-users-farms)
 - [Delete farm](#Delete-farm)
+- [Get collaborators for the farm](#Get-collaborators-for-the-farm)
+- [Get collaborator roles](#Get-collaborator)
+- [Add or update collaborator to farm](#Add-or-update-collaborator-to-farm)
+- [Delete collaborator](#Delete-collaborator)
 - [Create property for a farm](#Create-property-for-a-farm)
 - [Get The Farm's Properties](#Get-The-Farms-Properties)
 - [Get the property](#Get-the-property)
@@ -165,11 +169,117 @@
 	        "deletedByUu": null
 	    }
 	]
+
 #### Delete farm
 ##### Request 
 	DELETE http://localhost:8181/api/Farms/{FUID}
 ##### Respone
 	{ true } 
+	
+#### Get collaborators for the farm
+##### Request 
+	GET http://localhost:8181/api/Farms/Collaborators/{FUID}
+##### Respone
+	[
+		{
+			"fuid": {FUID},
+			"uuid": {UUID},
+			"ruid": {RUID},
+			"uu": {
+				"uuid": {UUID},
+				"username": "dogus.kar",
+				"password": "Qpf0SxOVUjUkWySXOZ16kw==",
+				"email": "doguskar98@gmail.com",
+				"emailActivated": false,
+				"phoneNumber": "5555555555",
+				"phoneNumberActivated": false,
+				"name": "Dogus",
+				"surname": "Kar",
+				"profilPic": null,
+				"createdDate": "2020-10-24T10:41:28.387",
+				"deletedFlag": false,
+				"deletedDate": null,
+				"deletedByUuid": null,
+				"ruid": 2,
+				"mtuid": 2
+			}
+		}
+	]
+	
+#### Get collaborator roles
+##### Request 
+	GET http://localhost:8181/api/Farms/Collaborators/{FUID}
+##### Respone
+	[
+		{
+			"ruid":  {RUID},
+			"createdByUuid": {UUID},
+			"name": "Manager",
+			"basicRoleFlag": true,
+			"createdDate": "2020-10-31T10:41:21.77",
+			"deletedFlag": false,
+			"deletedDate": null,
+			"deletedByUuid": null,
+			"canCreateProperty": true
+		}
+	]
+
+#### Add or update collaborator to farm
+##### Request Body
+	{
+		"fuid": {FUID},
+		"uuid": {UUID},
+		"ruid": {RUID}
+	}
+##### Request
+	POST http://localhost:8181/api/Farms/Collaborators
+##### Response
+	{
+		"fuid": {FUID},
+		"uuid": {UUID},
+		"ruid": {RUID},
+		"fu": {
+			"fuid": {FUID},
+			"name": "MyFarm",
+			"description": null,
+			"location": null,
+			"createdByUuid": "e07e65e7-1815-eb11-a494-201a06a548bb",
+			"createdDate": "2020-11-23T08:37:51.01",
+			"deletedFlag": false,
+			"deletedDate": null,
+			"deletedByUuid": null,
+			"lastModifiedDate": "2021-01-02T14:17:27.513"
+		}
+		"uu": {
+			"uuid": {UUID},
+			"username": "dogus.kar",
+			"password": "Qpf0SxOVUjUkWySXOZ16kw==",
+			"email": "doguskar98@gmail.com",
+			"emailActivated": false,
+			"phoneNumber": "5555555555",
+			"phoneNumberActivated": false,
+			"name": "Dogus",
+			"surname": "Kar",
+			"profilPic": null,
+			"createdDate": "2020-10-24T10:41:28.387",
+			"deletedFlag": false,
+			"deletedDate": null,
+			"deletedByUuid": null,
+			"ruid": 2,
+			"mtuid": 2
+		}
+	}
+
+#### Delete collaborator
+##### Request Body
+	{
+		"fuid": {FUID},
+		"uuid": {UUID}
+	}
+##### Request
+	DELETE http://localhost:8181/api/Farms/Collaborators
+##### Response
+	true
 
 #### Create property for a farm
 ##### Request Body
