@@ -93,22 +93,7 @@ namespace FarmTracker_services.Controllers
             {
                 return BadRequest();
             }
-            return CreatedAtAction(
-                nameof(GetFarmProperty),
-                new 
-                { 
-                    FUID = r.Fuid,
-                    PUID = r.Puid 
-                },
-                new
-                {
-                    FUID = r.Fuid,
-                    PUID = r.Puid,
-                    CUID = r.Cuid,
-                    Name = r.Name,
-                    Description = r.Description
-                }
-                );
+            return Ok(r);
         }
         [HttpGet("Properties/Entities/{PUID}")]
         public ActionResult<IEnumerable<EntityOfFp>> GetEntitiesOfFP(Guid PUID)
@@ -140,26 +125,7 @@ namespace FarmTracker_services.Controllers
             {
                 return BadRequest();
             }
-            return CreatedAtAction(
-                nameof(GetEntitiesOfFP),
-                new
-                {
-                    PUID = r.Puid,
-                    EUID = r.Euid
-                },
-                new
-                {
-                    EUID = r.Euid,
-                    PUID = r.Puid,
-                    CUID = r.Cuid,
-                    ID = r.Id,
-                    Name = r.Name,
-                    Description = r.Description,
-                    Count = r.Count,
-                    PurchasedDate = r.PurchasedDate,
-                    Cost = r.Cost
-                }
-                );
+            return Ok(r);
         }
         [HttpGet("Properties/Entities/COPValues/{EUID}")]
         public ActionResult<IEnumerable<EntityCopvalues>> GetECOPValues(Guid EUID)
@@ -302,24 +268,7 @@ namespace FarmTracker_services.Controllers
             {
                 return BadRequest();
             }
-            return CreatedAtAction(
-                nameof(GetIncomeAndExpenses),
-                new
-                {
-                    FUID = r.Fuid,
-                    IEUID = r.Ieuid
-                },
-                new
-                {
-                    IEUID = r.Ieuid,
-                    FUID = r.Fuid,
-                    Date = r.Date,
-                    Head = r.Head,
-                    Description = r.Description,
-                    Cost = r.Cost,
-                    IncomeFlag = r.IncomeFlag
-                }
-                );
+            return Ok(r);
         }
         [HttpPost("Expenses/")]
         public ActionResult<IncomeAndExpeneses> InsertExpenses([FromBody] IncomeAndExpeneses expenese)
@@ -331,24 +280,7 @@ namespace FarmTracker_services.Controllers
             {
                 return BadRequest();
             }
-            return CreatedAtAction(
-                nameof(GetIncomeAndExpenses),
-                new
-                {
-                    FUID = r.Fuid,
-                    IEUID = r.Ieuid
-                },
-                new
-                {
-                    IEUID = r.Ieuid,
-                    FUID = r.Fuid,
-                    Date = r.Date,
-                    Head = r.Head,
-                    Description = r.Description,
-                    Cost = r.Cost,
-                    IncomeFlag = r.IncomeFlag
-                }
-                );
+            return Ok(r);
         }
         [HttpGet("SubCategories/{CUID}")]
         public ActionResult<IEnumerable<Categories>> GetSubCategories(int CUID)

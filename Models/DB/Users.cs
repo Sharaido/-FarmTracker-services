@@ -24,7 +24,8 @@ namespace FarmTracker_services.Models.DB
             FarmsCreatedByUu = new HashSet<Farms>();
             FarmsDeletedByUu = new HashSet<Farms>();
             GeneratedUcodes = new HashSet<GeneratedUcodes>();
-            IncomeAndExpeneses = new HashSet<IncomeAndExpeneses>();
+            IncomeAndExpenesesCreatedByUu = new HashSet<IncomeAndExpeneses>();
+            IncomeAndExpenesesDeletedByUu = new HashSet<IncomeAndExpeneses>();
             InverseDeletedByUu = new HashSet<Users>();
             Roles = new HashSet<Roles>();
             Sessions = new HashSet<Sessions>();
@@ -68,7 +69,8 @@ namespace FarmTracker_services.Models.DB
         public virtual ICollection<Farms> FarmsCreatedByUu { get; set; }
         public virtual ICollection<Farms> FarmsDeletedByUu { get; set; }
         public virtual ICollection<GeneratedUcodes> GeneratedUcodes { get; set; }
-        public virtual ICollection<IncomeAndExpeneses> IncomeAndExpeneses { get; set; }
+        public virtual ICollection<IncomeAndExpeneses> IncomeAndExpenesesCreatedByUu { get; set; }
+        public virtual ICollection<IncomeAndExpeneses> IncomeAndExpenesesDeletedByUu { get; set; }
         public virtual ICollection<Users> InverseDeletedByUu { get; set; }
         public virtual ICollection<Roles> Roles { get; set; }
         public virtual ICollection<Sessions> Sessions { get; set; }

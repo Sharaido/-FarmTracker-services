@@ -60,10 +60,22 @@ namespace FarmTracker_services.Data
 
         public IEnumerable<EntityOfFp> GetEntitiesOfFP(Guid PUID)
         {
-            return _context.EntityOfFp
+            var r =  _context.EntityOfFp
                 .Where(e => e.Puid == PUID && !e.DeletedFlag)
                 .OrderByDescending(e => e.LastModifiedDate)
                 .ThenByDescending(e => e.CreatedDate);
+            foreach (var item in r)
+            {
+                var categoryOfProperty = _context.Categories.Where(e => e.Cuid == item.Cuid).FirstOrDefault();
+                var currentCategory = _context.Categories.Where(e => e.Cuid == item.Cuid).FirstOrDefault();
+                while (currentCategory.Pic == null)
+                {
+                    currentCategory = _context.Categories.Where(e => e.Cuid == currentCategory.SubCategoryOfCuid).FirstOrDefault();
+                    categoryOfProperty.Pic = currentCategory.Pic;
+                }
+                item.Cu = categoryOfProperty;
+            }
+            return r;
         }
 
         public EntityDetails GetEntityDetail(Guid EUID, Guid DUID)
@@ -82,9 +94,21 @@ namespace FarmTracker_services.Data
 
         public EntityOfFp GetEntityOfFP(Guid PUID, Guid EUID)
         {
-            return _context.EntityOfFp
+            var r = _context.EntityOfFp
                 .Where(e => e.Puid == PUID && e.Euid == EUID && !e.DeletedFlag)
                 .FirstOrDefault();
+            if (r != null)
+            {
+                var categoryOfProperty = _context.Categories.Where(e => e.Cuid == r.Cuid).FirstOrDefault();
+                var currentCategory = _context.Categories.Where(e => e.Cuid == r.Cuid).FirstOrDefault();
+                while (currentCategory.Pic == null)
+                {
+                    currentCategory = _context.Categories.Where(e => e.Cuid == currentCategory.SubCategoryOfCuid).FirstOrDefault();
+                    categoryOfProperty.Pic = currentCategory.Pic;
+                }
+                r.Cu = categoryOfProperty;
+            }
+            return r;
         }
 
         public IEnumerable<IncomeAndExpeneses> GetExpenses(Guid FUID)
@@ -110,9 +134,24 @@ namespace FarmTracker_services.Data
 
         public IEnumerable<FarmProperties> GetFarmProperties(Guid FUID)
         {
-            return _context.FarmProperties.Where(e => e.Fuid == FUID && !e.DeletedFlag)
+            var properties =  _context.FarmProperties.Where(e => e.Fuid == FUID && !e.DeletedFlag)
                 .OrderByDescending(e => e.LastModifiedDate)
                 .ThenByDescending(e => e.CreatedDate);
+
+            foreach (var property in properties)
+            {
+
+                var categoryOfProperty = _context.Categories.Where(e => e.Cuid == property.Cuid).FirstOrDefault();
+                var currentCategory = _context.Categories.Where(e => e.Cuid == property.Cuid).FirstOrDefault();
+                while (currentCategory.Pic == null)
+                {
+                    currentCategory = _context.Categories.Where(e => e.Cuid == currentCategory.SubCategoryOfCuid).FirstOrDefault();
+                    categoryOfProperty.Pic = currentCategory.Pic;
+                }
+                property.Cu = categoryOfProperty;
+            }
+
+            return properties;
         }
 
         public FarmProperties GetFarmProperty(Guid FUID, Guid PUID)
@@ -122,9 +161,15 @@ namespace FarmTracker_services.Data
 
         public IEnumerable<IncomeAndExpeneses> GetIncomeAndExpenses(Guid FUID)
         {
-            return _context.IncomeAndExpeneses
+            var ioes = _context.IncomeAndExpeneses
                 .Where(e => e.Fuid == FUID && !e.DeletedFlag)
                 .OrderByDescending(e => e.CreatedDate);
+            foreach (var ioe in ioes)
+            {
+                ioe.CreatedByUu = _context.Users.Where(e => e.Uuid == ioe.CreatedByUuid).FirstOrDefault();
+            }
+
+            return ioes;
         }
 
         public IncomeAndExpeneses GetIncomeAndExpenses(Guid FUID, Guid IEUID)
@@ -164,9 +209,10 @@ namespace FarmTracker_services.Data
 
         public IEnumerable<Categories> GetSubCategoies(int CUID)
         {
-            return _context.Categories
+            var categories =  _context.Categories
                 .Where(e => e.SubCategoryOfCuid == CUID)
                 .OrderBy(e => e.Name);
+            return categories;
         }
 
         public Users GetUser(Guid UUID)
@@ -230,18 +276,35 @@ namespace FarmTracker_services.Data
         [Obsolete]
         public EntityOfFp InsertEntityForFP(EntityOfFp entity)
         {
-            return _context.EntityOfFp
+            var r = _context.EntityOfFp
                 .FromSql($"InsertEntityForFP {entity.Cuid}, {entity.Puid}, {entity.Id}, {entity.Name}, {entity.Description}, {entity.Count}, {entity.PurchasedDate}, {entity.Cost}, {entity.CreatedByUuid}")
                 .ToList()
                 .FirstOrDefault();
+            if (r != null)
+            {
+                var categoryOfProperty = _context.Categories.Where(e => e.Cuid == r.Cuid).FirstOrDefault();
+                var currentCategory = _context.Categories.Where(e => e.Cuid == r.Cuid).FirstOrDefault();
+                while (currentCategory.Pic == null)
+                {
+                    currentCategory = _context.Categories.Where(e => e.Cuid == currentCategory.SubCategoryOfCuid).FirstOrDefault();
+                    categoryOfProperty.Pic = currentCategory.Pic;
+                }
+                r.Cu = categoryOfProperty;
+            }
+            return r;
         }
         [Obsolete]
         public IncomeAndExpeneses InsertExpense(IncomeAndExpeneses expenese)
         {
-            return _context.IncomeAndExpeneses
+            var r = _context.IncomeAndExpeneses
                 .FromSql($"InsertExpense {expenese.Fuid}, {expenese.Date}, {expenese.Head}, {expenese.Description}, {expenese.Cost}, {expenese.CreatedByUuid}")
                 .ToList()
                 .FirstOrDefault();
+            if (r != null)
+            {
+                r.CreatedByUu = _context.Users.Where(e => e.Uuid == r.CreatedByUuid).FirstOrDefault();
+            }
+            return r;
         }
         [Obsolete]
         public Farms InsertFarm(Farms farm)
@@ -254,18 +317,35 @@ namespace FarmTracker_services.Data
         [Obsolete]
         public FarmProperties InsertFarmProperty(FarmProperties property)
         {
-            return _context.FarmProperties
+            var r = _context.FarmProperties
                 .FromSql($"InsertFarmProperty {property.Name}, {property.Description}, {property.Cuid}, {property.Fuid}, {property.CreatedByUuid}")
                 .ToList()
                 .FirstOrDefault();
+            if (r != null)
+            {
+                var categoryOfProperty = _context.Categories.Where(e => e.Cuid == r.Cuid).FirstOrDefault();
+                var currentCategory = _context.Categories.Where(e => e.Cuid == r.Cuid).FirstOrDefault();
+                while (currentCategory.Pic == null)
+                {
+                    currentCategory = _context.Categories.Where(e => e.Cuid == currentCategory.SubCategoryOfCuid).FirstOrDefault();
+                    categoryOfProperty.Pic = currentCategory.Pic;
+                }
+                r.Cu = categoryOfProperty;
+            }
+            return r;
         }
         [Obsolete]
         public IncomeAndExpeneses InsertIncome(IncomeAndExpeneses income)
         {
-            return _context.IncomeAndExpeneses
+            var r = _context.IncomeAndExpeneses
                 .FromSql($"InsertIncome {income.Fuid}, {income.Date}, {income.Head}, {income.Description}, {income.Cost}, {income.CreatedByUuid}")
                 .ToList()
                 .FirstOrDefault();
+            if (r != null)
+            {
+                r.CreatedByUu = _context.Users.Where(e => e.Uuid == r.CreatedByUuid).FirstOrDefault();
+            }
+            return r;
         }
 
         [Obsolete]
@@ -407,6 +487,7 @@ namespace FarmTracker_services.Data
             foreach (var item in collaborators)
             {
                 item.Uu = _context.Users.Where(e => e.Uuid == item.Uuid).FirstOrDefault();
+                item.Ru = _context.CRoles.Where(e => e.Ruid == item.Ruid).FirstOrDefault();
             }
             return collaborators;
         }
@@ -435,6 +516,8 @@ namespace FarmTracker_services.Data
             var r = _context.SaveChanges();
             if (r > 0)
             {
+                collaborator.Ru = _context.CRoles.Where(e => e.Ruid == collaborator.Ruid).FirstOrDefault();
+                collaborator.Uu = _context.Users.Where(e => e.Uuid == collaborator.Uuid).FirstOrDefault();
                 return collaborator;
             }
             return null;

@@ -202,6 +202,17 @@
 				"deletedByUuid": null,
 				"ruid": 2,
 				"mtuid": 2
+			},
+			"ru": {
+				"ruid": {RUID},
+				"createdByUuid": {UUID},
+				"name": "Manager",
+				"basicRoleFlag": true,
+				"createdDate": "2020-10-31T10:41:21.77",
+				"deletedFlag": false,
+				"deletedDate": null,
+				"deletedByUuid": null,
+				"canCreateProperty": true
 			}
 		}
 	]
@@ -316,7 +327,14 @@
 	        "deletedDate": null,
 	        "deletedByUuid": null,
 	        "createdByUu": null,
-	        "deletedByUu": null
+	        "deletedByUu": null,
+			"cu": {
+				"cuid": {CUID},
+				"name": "Terrestrial",
+				"pic": "plant_property1.jpg",
+				"endPointFlag": false,
+				"subCategoryOfCuid": 1
+			}
 	    }
 	]
 #### Get the property
@@ -352,7 +370,14 @@
 	    "Description": null,
 	    "Count": 1,
 	    "PurchasedDate": null,
-	    "Cost": 0
+	    "Cost": 0,
+		"cu": {
+			"cuid": {CUID},
+			"name": "Animal",
+			"pic": "animal1.jpg",
+			"endPointFlag": false,
+			"subCategoryOfCuid": 2
+		}
 	}
 ##### Request 
 	POST http://localhost:8181/api/Farms/Properties/Entities/
@@ -394,7 +419,14 @@
 	        "deletedFlag": false,
 	        "deletedDate": null,
 	        "deletedByUuid": null,
-	        "createdByUu": null
+	        "createdByUu": null,
+			"cu": {
+				"cuid": {CUID},
+				"name": "Terrestrial",
+				"pic": "plant_property1.jpg",
+				"endPointFlag": false,
+				"subCategoryOfCuid": 1
+			}
 	    }
 	]
 
@@ -422,7 +454,14 @@
 		"deletedFlag": false,
 		"deletedDate": null,
 		"deletedByUuid": null,
-		"createdByUu": null
+		"createdByUu": null,
+		"cu": {
+			"cuid": {CUID},
+			"name": "Terrestrial",
+			"pic": "plant_property1.jpg",
+			"endPointFlag": false,
+			"subCategoryOfCuid": 1
+		}
 	}	
 #### Delete fp entity
 ##### Request 
@@ -522,7 +561,25 @@
 	    "head": "Income",
 	    "description": null,
 	    "cost": 95.0000,
-	    "incomeFlag": true
+	    "incomeFlag": true,
+		"createdByUu": {
+			"uuid": {UUID},
+			"username": "doguskar1",
+			"password": "Qpf0SxOVUjUkWySXOZ16kw==",
+			"email": "doguskar1@hotmail.com",
+			"emailActivated": false,
+			"phoneNumber": "5555555555",
+			"phoneNumberActivated": false,
+			"name": "Doğuş",
+			"surname": "Kar",
+			"profilPic": null,
+			"createdDate": "2020-11-04T14:17:01.84",
+			"deletedFlag": false,
+			"deletedDate": null,
+			"deletedByUuid": null,
+			"ruid": 2,
+			"mtuid": 1
+		}
 	}
 
 #### Get farm's incomes
@@ -563,7 +620,25 @@
 	    "head": "Expense",
 	    "description": null,
 	    "cost": 95.0000,
-	    "incomeFlag": false
+	    "incomeFlag": false,
+		"createdByUu": {
+			"uuid": {UUID},
+			"username": "doguskar1",
+			"password": "Qpf0SxOVUjUkWySXOZ16kw==",
+			"email": "doguskar1@hotmail.com",
+			"emailActivated": false,
+			"phoneNumber": "5555555555",
+			"phoneNumberActivated": false,
+			"name": "Doğuş",
+			"surname": "Kar",
+			"profilPic": null,
+			"createdDate": "2020-11-04T14:17:01.84",
+			"deletedFlag": false,
+			"deletedDate": null,
+			"deletedByUuid": null,
+			"ruid": 2,
+			"mtuid": 1
+		}
 	}
 
 #### Get farm's expenses
@@ -602,20 +677,25 @@
 	        "createdByUuid": "{UUID}",
 	        "deletedFlag": false,
 	        "deletedDate": null,
-	        "deletedByUuid": null
-	    },
-	    {
-	        "ieuid": "{IEUID}",
-	        "fuid": "{FUID}",
-	        "incomeFlag": false,
-	        "date": "2020-11-01T00:00:00",
-	        "head": "Expense",
-	        "description": null,
-	        "cost": 95.0000,
-	        "createdByUuid": "{UUID}",
-	        "deletedFlag": false,
-	        "deletedDate": null,
-	        "deletedByUuid": null
+	        "deletedByUuid": null,
+			"createdByUu": {
+				"uuid": {UUID},
+				"username": "doguskar1",
+				"password": "Qpf0SxOVUjUkWySXOZ16kw==",
+				"email": "doguskar1@hotmail.com",
+				"emailActivated": false,
+				"phoneNumber": "5555555555",
+				"phoneNumberActivated": false,
+				"name": "Doğuş",
+				"surname": "Kar",
+				"profilPic": null,
+				"createdDate": "2020-11-04T14:17:01.84",
+				"deletedFlag": false,
+				"deletedDate": null,
+				"deletedByUuid": null,
+				"ruid": 2,
+				"mtuid": 1
+			}
 	    }
 	]
 #### Delete income or expense

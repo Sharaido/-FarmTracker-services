@@ -18,6 +18,7 @@ namespace FarmTracker_services.Models.DB
         public DateTime? DeletedDate { get; set; }
         public Guid? DeletedByUuid { get; set; }
 
+        public virtual Users CreatedByUu { get; set; }
         public virtual Users DeletedByUu { get; set; }
         public virtual Farms Fu { get; set; }
     }

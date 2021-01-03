@@ -208,6 +208,8 @@ namespace FarmTracker_services.Models.DB
                     .HasColumnName("name")
                     .HasMaxLength(50);
 
+                entity.Property(e => e.Pic).HasColumnName("pic");
+
                 entity.Property(e => e.SubCategoryOfCuid).HasColumnName("subCategoryOfCUID");
             });
 
@@ -784,8 +786,13 @@ namespace FarmTracker_services.Models.DB
 
                 entity.Property(e => e.IncomeFlag).HasColumnName("incomeFlag");
 
+                entity.HasOne(d => d.CreatedByUu)
+                    .WithMany(p => p.IncomeAndExpenesesCreatedByUu)
+                    .HasForeignKey(d => d.CreatedByUuid)
+                    .HasConstraintName("FK_incomeAndExpeneses_users1");
+
                 entity.HasOne(d => d.DeletedByUu)
-                    .WithMany(p => p.IncomeAndExpeneses)
+                    .WithMany(p => p.IncomeAndExpenesesDeletedByUu)
                     .HasForeignKey(d => d.DeletedByUuid)
                     .HasConstraintName("FK_incomeAndExpeneses_users");
 

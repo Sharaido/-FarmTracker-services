@@ -16,6 +16,7 @@ namespace FarmTracker_services.Models.DB
 
         public int Cuid { get; set; }
         public string Name { get; set; }
+        public string Pic { get; set; }
         public bool? EndPointFlag { get; set; }
         public int? SubCategoryOfCuid { get; set; }
 
