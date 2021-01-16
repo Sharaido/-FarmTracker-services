@@ -258,12 +258,20 @@ namespace FarmTracker_services.Data
         }
 
         [Obsolete]
-        public EntityDetails InsertDetailForEntityOfFP(EntityDetails detail)
+        public EntityDetails InsertOrUpdateEntityDetail(EntityDetails detail, Guid UUID)
         {
-            return _context.EntityDetails
-                .FromSql($"InsertDetailForEntityOfFP {detail.Euid}, {detail.Name}, {detail.Description}, {detail.Cost}, {detail.RemainderDate}, {detail.CreatedByUuid}")
-                .ToList()
-                .FirstOrDefault();
+            EntityDetails _detail = _context.EntityDetails.Where(e => e.Duid == detail.Duid).FirstOrDefault();
+            if (_detail != null)
+            {
+                return UpdateEntityDetail(detail, UUID);
+            }
+            else
+            {
+                return _context.EntityDetails
+                    .FromSql($"InsertDetailForEntityOfFP {detail.Euid}, {detail.Name}, {detail.Description}, {detail.Cost}, {detail.RemainderDate}, {UUID}")
+                    .ToList()
+                    .FirstOrDefault();
+            }
         }
         [Obsolete]
         public EntityCopvalues InsertEntityCOPValue(EntityCopvalues copvalue)
@@ -552,6 +560,92 @@ namespace FarmTracker_services.Data
                         select u;*/
 
             return users;
+        }
+
+        public bool DeleteEntityDetail(Guid DUID, Guid UUID)
+        {
+            EntityDetails _detail = _context.EntityDetails.Where(e => e.Duid == DUID).FirstOrDefault();
+            if (_detail != null && !_detail.DeletedFlag)
+            {
+                _detail.DeletedFlag = true;
+                _detail.DeletedDate = DateTime.UtcNow;
+                _detail.DeletedByUuid = UUID;
+            }
+            var r = _context.SaveChanges();
+            if (r > 0)
+            {
+                EntityOfFp _entity = _context.EntityOfFp.Where(e => e.Euid == _detail.Euid).FirstOrDefault();
+                if (_entity != null)
+                {
+                    _entity.LastModifiedDate = DateTime.UtcNow;
+                    FarmProperties _property = _context.FarmProperties.Where(e => e.Puid == _entity.Puid).FirstOrDefault();
+                    if (_property != null)
+                    {
+                        _property.LastModifiedDate = DateTime.UtcNow;
+                        Farms _farm = _context.Farms.Where(e => e.Fuid == _property.Fuid).FirstOrDefault();
+                        if (_farm != null)
+                        {
+                            _farm.LastModifiedDate = DateTime.UtcNow;
+                        }
+                    }
+                }
+                _context.SaveChanges();
+                return true;
+            }
+            return false;
+        }
+
+        public EntityDetails UpdateEntityDetail(EntityDetails detail, Guid UUID)
+        {
+            EntityDetails _detail = _context.EntityDetails.Where(e => e.Duid == detail.Duid).FirstOrDefault();
+            if (_detail != null)
+            {
+                if (detail.Cost != null)
+                    _detail.Cost = detail.Cost;
+                if (detail.Description != null)
+                    _detail.Description = detail.Description;
+                if (detail.Name != null)
+                    _detail.Name = detail.Name;
+                if (detail.RemainderDate != null)
+                    _detail.RemainderDate = detail.RemainderDate;
+
+                if (_detail.RemainderCompletedFlag != detail.RemainderCompletedFlag && detail.RemainderCompletedFlag == true)
+                {
+                    _detail.RemainderCompletedByUuid = UUID;
+                    _detail.RemainderCompletedDate = DateTime.UtcNow;
+                    _detail.RemainderCompletedFlag = true;
+                }
+            }
+            var r = _context.SaveChanges();
+            if (r > 0)
+            {
+                EntityOfFp _entity = _context.EntityOfFp.Where(e => e.Euid == _detail.Euid).FirstOrDefault();
+                if (_entity != null)
+                {
+                    _entity.LastModifiedDate = DateTime.UtcNow;
+                    FarmProperties _property = _context.FarmProperties.Where(e => e.Puid == _entity.Puid).FirstOrDefault();
+                    if (_property != null)
+                    {
+                        _property.LastModifiedDate = DateTime.UtcNow;
+                        Farms _farm = _context.Farms.Where(e => e.Fuid == _property.Fuid).FirstOrDefault();
+                        if (_farm != null)
+                        {
+                            _farm.LastModifiedDate = DateTime.UtcNow;
+                        }
+                    }
+                }
+                _context.SaveChanges();
+                return _detail;
+            }
+            return null;
+        }
+        [Obsolete]
+        public IEnumerable<EntityDetails> GetRemaindersForUUID(Guid UUID)
+        {
+            var r = _context.EntityDetails
+                .FromSql($"SelectRemaindersForUUID {UUID}")
+                .ToList();
+            return r;
         }
     }
 }

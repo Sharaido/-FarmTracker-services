@@ -20,7 +20,7 @@ namespace FarmTracker_services.Data
         Farms InsertFarm(Farms farm);
         FarmProperties InsertFarmProperty(FarmProperties property);
         EntityOfFp InsertEntityForFP(EntityOfFp entity);
-        EntityDetails InsertDetailForEntityOfFP(EntityDetails detail);
+        EntityDetails InsertOrUpdateEntityDetail(EntityDetails detail, Guid UUID);
         EntityCopvalues InsertEntityCOPValue(EntityCopvalues copvalue);
         IncomeAndExpeneses InsertIncome(IncomeAndExpeneses income);
         IncomeAndExpeneses InsertExpense(IncomeAndExpeneses expenese);
@@ -59,6 +59,8 @@ namespace FarmTracker_services.Data
         bool DeleteCollaborator(Collaborators collaborator);
         IEnumerable<CRoles> GetCRoles();
         IEnumerable<Users> SearchUser(string key);
+        bool DeleteEntityDetail(Guid DUID, Guid UUID);
+        IEnumerable<EntityDetails> GetRemaindersForUUID(Guid UUID);
 
 
     }

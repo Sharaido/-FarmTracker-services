@@ -194,29 +194,12 @@ namespace FarmTracker_services.Controllers
         public ActionResult<EntityDetails> InsertDetailForEntityOfFP([FromBody] EntityDetails detail)
         {
             var UUID = new Guid(User.Claims.FirstOrDefault(e => e.Type.Equals("UUID")).Value);
-            detail.CreatedByUuid = UUID;
-            var r = _repositroy.InsertDetailForEntityOfFP(detail);
+            var r = _repositroy.InsertOrUpdateEntityDetail(detail , UUID);
             if (r == null)
             {
                 return BadRequest();
             }
-            return CreatedAtAction(
-                nameof(GetEntityDetails),
-                new
-                {
-                    EUID = r.Euid,
-                    DUID = r.Duid
-                },
-                new
-                {
-                    DUID = r.Duid,
-                    EUID = r.Euid,
-                    Name = r.Name,
-                    Description = r.Description,
-                    Cost = r.Cost,
-                    RemainderDate = r.RemainderDate
-                }
-                );
+            return Ok(r);
         }
         [HttpGet("IncomeAndExpenses/{FUID}")]
         public ActionResult<IEnumerable<IncomeAndExpeneses>> GetIncomeAndExpenses(Guid FUID)
@@ -412,5 +395,30 @@ namespace FarmTracker_services.Controllers
             return Ok(r);
         }
 
+        [HttpDelete("Properties/Entities/Details/{DUID}")]
+        public ActionResult<bool> DeleteEntityDetail(Guid DUID)
+        {
+            var UUID = new Guid(User.Claims.FirstOrDefault(e => e.Type.Equals("UUID")).Value);
+            var r = _repositroy.DeleteEntityDetail(DUID, UUID);
+            if (r)
+            {
+                return Ok(r);
+            }
+            return BadRequest(r);
+        }
+
+
+
+        [HttpGet("GetRemainders/")]
+        public ActionResult<IEnumerable<EntityDetails>> GetRemainders()
+        {
+            var UUID = new Guid(User.Claims.FirstOrDefault(e => e.Type.Equals("UUID")).Value);
+            var r = _repositroy.GetRemaindersForUUID(UUID);
+            if (r == null || r.Count() == 0)
+            {
+                return NotFound();
+            }
+            return Ok(r);
+        }
     }
 }
