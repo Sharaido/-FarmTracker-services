@@ -276,10 +276,32 @@ namespace FarmTracker_services.Data
         [Obsolete]
         public EntityCopvalues InsertEntityCOPValue(EntityCopvalues copvalue)
         {
-            return _context.EntityCopvalues
+            var r = _context.EntityCopvalues
                 .FromSql($"InsertEntityCOPValue {copvalue.Euid}, {copvalue.Puid}, {copvalue.Value}")
                 .ToList()
                 .FirstOrDefault();
+
+            if (r != null)
+            {
+                EntityOfFp _entity = _context.EntityOfFp.Where(e => e.Euid == r.Euid).FirstOrDefault();
+                if (_entity != null)
+                {
+                    _entity.LastModifiedDate = DateTime.UtcNow;
+                    FarmProperties _property = _context.FarmProperties.Where(e => e.Puid == _entity.Puid).FirstOrDefault();
+                    if (_property != null)
+                    {
+                        _property.LastModifiedDate = DateTime.UtcNow;
+                        Farms _farm = _context.Farms.Where(e => e.Fuid == _property.Fuid).FirstOrDefault();
+                        if (_farm != null)
+                        {
+                            _farm.LastModifiedDate = DateTime.UtcNow;
+                        }
+                    }
+                }
+                _context.SaveChanges();
+            }
+
+            return r;
         }
         [Obsolete]
         public EntityOfFp InsertEntityForFP(EntityOfFp entity)
