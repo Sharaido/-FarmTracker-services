@@ -420,5 +420,39 @@ namespace FarmTracker_services.Controllers
             }
             return Ok(r);
         }
+
+
+        [HttpGet("Properties/Details/{PUID}")]
+        public ActionResult<IEnumerable<PropertyDetail>> GetPDetails(Guid PUID)
+        {
+            var r = _repositroy.GetPropertyDetails(PUID);
+            if (r == null || r.Count() == 0)
+            {
+                return NotFound();
+            }
+            return Ok(r);
+        }
+        [HttpPost("Properties/Details/")]
+        public ActionResult<PropertyDetail> InsertOrUpdatePDetail([FromBody] PropertyDetail detail)
+        {
+            var UUID = new Guid(User.Claims.FirstOrDefault(e => e.Type.Equals("UUID")).Value);
+            var r = _repositroy.InsertOrUpdatePDetail(detail, UUID);
+            if (r == null)
+            {
+                return BadRequest();
+            }
+            return Ok(r);
+        }
+        [HttpDelete("Properties/Details/{DUID}")]
+        public ActionResult<bool> DeletePDetail(Guid DUID)
+        {
+            var UUID = new Guid(User.Claims.FirstOrDefault(e => e.Type.Equals("UUID")).Value);
+            var r = _repositroy.DeletePropertyDetail(DUID, UUID);
+            if (r)
+            {
+                return Ok(r);
+            }
+            return BadRequest(r);
+        }
     }
 }

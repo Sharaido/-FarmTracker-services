@@ -62,6 +62,10 @@ namespace FarmTracker_services.Data
         bool DeleteEntityDetail(Guid DUID, Guid UUID);
         IEnumerable<EntityDetails> GetRemaindersForUUID(Guid UUID);
 
-
+        
+        PropertyDetail InsertOrUpdatePDetail(PropertyDetail detail, Guid UUID);
+        IEnumerable<PropertyDetail> GetPropertyDetails(Guid PUID);
+        bool DeletePropertyDetail(Guid DUID, Guid UUID);
+        //IEnumerable<PropertyDetail> GetPropertyRemaindersForUUID(Guid UUID);
     }
 }

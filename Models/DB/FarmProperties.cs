@@ -8,6 +8,7 @@ namespace FarmTracker_services.Models.DB
         public FarmProperties()
         {
             EntityOfFp = new HashSet<EntityOfFp>();
+            PropertyDetail = new HashSet<PropertyDetail>();
         }
 
         public Guid Puid { get; set; }
@@ -27,5 +28,6 @@ namespace FarmTracker_services.Models.DB
         public virtual Users DeletedByUu { get; set; }
         public virtual Farms Fu { get; set; }
         public virtual ICollection<EntityOfFp> EntityOfFp { get; set; }
+        public virtual ICollection<PropertyDetail> PropertyDetail { get; set; }
     }
 }

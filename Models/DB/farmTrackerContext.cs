@@ -34,6 +34,7 @@ namespace FarmTracker_services.Models.DB
         public virtual DbSet<IncomeAndExpeneses> IncomeAndExpeneses { get; set; }
         public virtual DbSet<MemberType> MemberType { get; set; }
         public virtual DbSet<Pictures> Pictures { get; set; }
+        public virtual DbSet<PropertyDetail> PropertyDetail { get; set; }
         public virtual DbSet<Roles> Roles { get; set; }
         public virtual DbSet<Sessions> Sessions { get; set; }
         public virtual DbSet<SignInLogs> SignInLogs { get; set; }
@@ -847,6 +848,79 @@ namespace FarmTracker_services.Models.DB
                     .WithMany(p => p.Pictures)
                     .HasForeignKey(d => d.Auid)
                     .HasConstraintName("FK_Pictures_Adds");
+            });
+
+            modelBuilder.Entity<PropertyDetail>(entity =>
+            {
+                entity.HasKey(e => e.Duid);
+
+                entity.ToTable("propertyDetail");
+
+                entity.Property(e => e.Duid)
+                    .HasColumnName("DUID")
+                    .HasDefaultValueSql("(newsequentialid())");
+
+                entity.Property(e => e.Cost)
+                    .HasColumnName("cost")
+                    .HasColumnType("money");
+
+                entity.Property(e => e.CreatedByUuid).HasColumnName("createdByUUID");
+
+                entity.Property(e => e.CreatedDate)
+                    .HasColumnName("createdDate")
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getutcdate())");
+
+                entity.Property(e => e.DeletedByUuid).HasColumnName("deletedByUUID");
+
+                entity.Property(e => e.DeletedDate)
+                    .HasColumnName("deletedDate")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.DeletedFlag).HasColumnName("deletedFlag");
+
+                entity.Property(e => e.Description).HasColumnName("description");
+
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasColumnName("name")
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.Puid).HasColumnName("PUID");
+
+                entity.Property(e => e.RemainderCompletedByUuid).HasColumnName("remainderCompletedByUUID");
+
+                entity.Property(e => e.RemainderCompletedDate)
+                    .HasColumnName("remainderCompletedDate")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.RemainderCompletedFlag).HasColumnName("remainderCompletedFlag");
+
+                entity.Property(e => e.RemainderDate)
+                    .HasColumnName("remainderDate")
+                    .HasColumnType("datetime");
+
+                entity.HasOne(d => d.CreatedByUu)
+                    .WithMany(p => p.PropertyDetailCreatedByUu)
+                    .HasForeignKey(d => d.CreatedByUuid)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_propertyDetail_users2");
+
+                entity.HasOne(d => d.DeletedByUu)
+                    .WithMany(p => p.PropertyDetailDeletedByUu)
+                    .HasForeignKey(d => d.DeletedByUuid)
+                    .HasConstraintName("FK_propertyDetail_users1");
+
+                entity.HasOne(d => d.Pu)
+                    .WithMany(p => p.PropertyDetail)
+                    .HasForeignKey(d => d.Puid)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_propertyDetail_farmProperties");
+
+                entity.HasOne(d => d.RemainderCompletedByUu)
+                    .WithMany(p => p.PropertyDetailRemainderCompletedByUu)
+                    .HasForeignKey(d => d.RemainderCompletedByUuid)
+                    .HasConstraintName("FK_propertyDetail_users");
             });
 
             modelBuilder.Entity<Roles>(entity =>

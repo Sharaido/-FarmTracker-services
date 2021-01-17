@@ -669,5 +669,90 @@ namespace FarmTracker_services.Data
                 .ToList();
             return r;
         }
+
+        public PropertyDetail InsertOrUpdatePDetail(PropertyDetail detail, Guid UUID)
+        {
+            PropertyDetail _detail = _context.PropertyDetail.Where(e => e.Duid == detail.Duid).FirstOrDefault();
+            if (_detail != null)
+            {
+                if (detail.Cost != null)
+                    _detail.Cost = detail.Cost;
+                if (detail.Description != null)
+                    _detail.Description = detail.Description;
+                if (detail.Name != null)
+                    _detail.Name = detail.Name;
+                if (detail.RemainderDate != null)
+                    _detail.RemainderDate = detail.RemainderDate;
+
+                if (_detail.RemainderCompletedFlag != detail.RemainderCompletedFlag && detail.RemainderCompletedFlag == true)
+                {
+                    _detail.RemainderCompletedByUuid = UUID;
+                    _detail.RemainderCompletedDate = DateTime.UtcNow;
+                    _detail.RemainderCompletedFlag = true;
+                }
+            }
+            else
+            {
+                detail.CreatedByUuid = UUID;
+                _context.PropertyDetail.Add(detail);
+            }
+            var r = _context.SaveChanges();
+            if (r > 0)
+            {
+                FarmProperties _property = _context.FarmProperties.Where(e => e.Puid == detail.Puid).FirstOrDefault();
+                if (_property != null)
+                {
+                    _property.LastModifiedDate = DateTime.UtcNow;
+                    Farms _farm = _context.Farms.Where(e => e.Fuid == _property.Fuid).FirstOrDefault();
+                    if (_farm != null)
+                    {
+                        _farm.LastModifiedDate = DateTime.UtcNow;
+                    }
+                }
+                _context.SaveChanges();
+                return detail;
+            }
+            return null;
+        }
+
+        public IEnumerable<PropertyDetail> GetPropertyDetails(Guid PUID)
+        {
+            return _context.PropertyDetail
+                .Where(e => e.Puid == PUID && !e.DeletedFlag)
+                .OrderByDescending(e => e.CreatedDate);
+        }
+
+        public bool DeletePropertyDetail(Guid DUID, Guid UUID)
+        {
+            PropertyDetail _detail = _context.PropertyDetail.Where(e => e.Duid == DUID).FirstOrDefault();
+            if (_detail != null && !_detail.DeletedFlag)
+            {
+                _detail.DeletedFlag = true;
+                _detail.DeletedDate = DateTime.UtcNow;
+                _detail.DeletedByUuid = UUID;
+            }
+            var r = _context.SaveChanges();
+            if (r > 0)
+            {
+                FarmProperties _property = _context.FarmProperties.Where(e => e.Puid == _detail.Puid).FirstOrDefault();
+                if (_property != null)
+                {
+                    _property.LastModifiedDate = DateTime.UtcNow;
+                    Farms _farm = _context.Farms.Where(e => e.Fuid == _property.Fuid).FirstOrDefault();
+                    if (_farm != null)
+                    {
+                        _farm.LastModifiedDate = DateTime.UtcNow;
+                    }
+                }
+                _context.SaveChanges();
+                return true;
+            }
+            return false;
+        }
+
+        /*public IEnumerable<PropertyDetail> GetPropertyRemaindersForUUID(Guid UUID)
+        {
+            throw new NotImplementedException();
+        }*/
     }
 }
